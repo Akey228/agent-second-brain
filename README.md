@@ -972,6 +972,12 @@ claude auth login
 - Все взаимодействия сохраняются в `vault/sessions/YYYY-MM-DD.jsonl`
 - Append-only формат для надёжности
 
+**Graph Builder:**
+- Skill `graph-builder` для анализа связей в vault
+- `scripts/analyze.py` — статистика графа, orphan-заметки
+- `scripts/add_links.py` — предложение и добавление связей
+- Команда `/graph analyze` для анализа vault
+
 **Разрешения Claude:**
 ```bash
 cp .claude/settings.local.example.json .claude/settings.local.json
