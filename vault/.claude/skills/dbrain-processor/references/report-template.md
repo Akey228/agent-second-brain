@@ -42,7 +42,7 @@ NO unsupported tags: div, span, br, p, table, tr, td
 • {emoji} {title} → {category}/
 
 <b>✅ Создано задач:</b> {M}
-• {task_name} <i>({priority}, {due})</i>
+• {task_name} <i>({due})</i>
 
 <b>📅 Загрузка на неделю:</b>
 Пн: {n} | Вт: {n} | Ср: {n} | Чт: {n} | Пт: {n} | Сб: {n} | Вс: {n}
@@ -76,8 +76,8 @@ Count saved, list with category emoji:
 💡 idea, 🪞 reflection, 🎯 project, 📚 learning
 
 ### Tasks (✅)
-Count created, list with priority and due date.
-Format: • Task name <i>(p2, friday)</i>
+Count created, list with due date.
+Format: • Task name <i>(friday)</i>
 
 ### Week Load (📅)
 Call find-tasks-by-date for 7 days.

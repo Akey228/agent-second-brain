@@ -59,38 +59,6 @@ If similar exists → mark as duplicate, don't create.
 
 ---
 
-## Priority by Domain
-
-Based on user's work context (see [ABOUT.md](ABOUT.md)):
-
-| Domain | Default Priority | Override |
-|--------|-----------------|----------|
-| Client Work | p1-p2 | — |
-| Agency Ops (urgent) | p2 | — |
-| Agency Ops (regular) | p3 | — |
-| Content (with deadline) | p2-p3 | — |
-| Product/R&D | p4 | масштабируемость → p3 |
-| AI & Tech | p4 | автоматизация → p3 |
-
-### Priority Keywords
-
-| Keywords in text | Priority |
-|-----------------|----------|
-| срочно, критично, дедлайн клиента | p1 |
-| важно, приоритет, до конца недели | p2 |
-| нужно, надо, не забыть | p3 |
-| (strategic, R&D, long-term) | p4 |
-
-### Apply Decision Filters for Priority Boost
-
-If entry matches 2+ filters → boost priority by 1 level:
-- Это масштабируется?
-- Это можно автоматизировать?
-- Это усиливает экспертизу/бренд?
-- Это приближает к продукту/SaaS?
-
----
-
 ## Date Mapping
 
 | Context | dueString |
@@ -125,7 +93,6 @@ add-tasks:
   tasks:
     - content: "Task title"
       dueString: "friday"  # MANDATORY
-      priority: "p4"       # based on domain
       projectId: "..."     # if known
 ```
 

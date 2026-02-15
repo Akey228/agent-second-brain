@@ -22,7 +22,7 @@ Based on user's work context (see [ABOUT.md](ABOUT.md)):
 <!-- Добавьте имена ваших клиентов через запятую -->
 **Keywords:** [Your Client Names], клиент, бриф, презентация, дедлайн, KPI
 
-**→ Category:** task (p1-p2) → Todoist
+**→ Category:** task → Todoist
 
 ### AI & Tech
 Инструменты, модели, промпты, пайплайны, агенты
@@ -61,10 +61,10 @@ Based on user's work context (see [ABOUT.md](ABOUT.md)):
 ```
 Entry text contains...
 │
-├─ Client brand or deadline? ────────────────────> TASK (p1-p2)
+├─ Client brand or deadline? ────────────────────> TASK
 │  ([Your Clients], клиент, дедлайн, презентация)
 │
-├─ Operational/urgent? ──────────────────────────> TASK (p2-p3)
+├─ Operational/urgent? ──────────────────────────> TASK
 │  (нужно сделать, не забыть, позвонить, встреча)
 │
 ├─ AI/tech learning? ────────────────────────────> LEARNING
@@ -83,18 +83,6 @@ Entry text contains...
    (пост, тезис, контент)
 ```
 
-## Apply Decision Filters
-
-Перед сохранением спроси:
-- Это масштабируется?
-- Это можно автоматизировать?
-- Это усиливает экспертизу или бренд?
-- Это приближает к продукту или SaaS?
-
-Если да на 2+ вопроса → повысить приоритет.
-
----
-
 ## Photo Entries
 
 For `[photo]` entries:
@@ -110,15 +98,13 @@ For `[photo]` entries:
 
 ## Output Locations
 
-| Category | Destination | Priority |
-|----------|-------------|----------|
-| task (client) | Todoist | p1-p2 |
-| task (ops) | Todoist | p2-p3 |
-| task (content) | Todoist | p3-p4 |
-| idea | thoughts/ideas/ | — |
-| reflection | thoughts/reflections/ | — |
-| project | thoughts/projects/ | — |
-| learning | thoughts/learnings/ | — |
+| Category | Destination |
+|----------|-------------|
+| task | Todoist |
+| idea | thoughts/ideas/ |
+| reflection | thoughts/reflections/ |
+| project | thoughts/projects/ |
+| learning | thoughts/learnings/ |
 
 ---
 

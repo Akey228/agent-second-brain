@@ -135,8 +135,8 @@ Example:
 Daily processing complete
 
 **Created tasks:** 3
-- "Follow-up client" (id: 8501234567, p2, tomorrow)
-- "Prepare proposal" (id: 8501234568, p2, friday)
+- "Follow-up client" (id: 8501234567, tomorrow)
+- "Prepare proposal" (id: 8501234568, friday)
 
 **Saved thoughts:** 1
 - [[thoughts/ideas/product-launch|Product Launch]] — new idea
@@ -186,13 +186,6 @@ Types: [voice], [text], [forward from: Name], [photo]
 task → Todoist (see references/todoist.md)
 idea/reflection/learning → thoughts/ (see references/classification.md)
 
-## Priority Rules
-
-p1 — Client deadline, urgent
-p2 — Aligns with ONE Big Thing or monthly priority
-p3 — Aligns with yearly goal
-p4 — Operational, no goal alignment
-
 ## Thought Categories
 
 💡 idea → thoughts/ideas/
@@ -213,7 +206,7 @@ Output RAW HTML (no markdown, no code blocks):
 • {emoji} {title} → {category}/
 
 <b>✅ Создано задач:</b> {M}
-• {task} <i>({priority}, {due})</i>
+• {task} <i>({due})</i>
 
 <b>📋 Process Goals:</b>
 • {process goal 1} → {status}
