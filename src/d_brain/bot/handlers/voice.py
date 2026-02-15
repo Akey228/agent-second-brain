@@ -1,4 +1,4 @@
-"""Voice message handler."""
+"""Voice message handler — transcribe and route through brain."""
 
 import logging
 from datetime import datetime
@@ -6,6 +6,7 @@ from datetime import datetime
 from aiogram import Bot, Router
 from aiogram.types import Message
 
+from d_brain.bot.brain import process_with_brain
 from d_brain.config import get_settings
 from d_brain.services.session import SessionStore
 from d_brain.services.storage import VaultStorage
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 @router.message(lambda m: m.voice is not None)
 async def handle_voice(message: Message, bot: Bot) -> None:
-    """Handle voice messages."""
+    """Handle voice messages — transcribe, save, route through Claude brain."""
     if not message.voice or not message.from_user:
         return
 
@@ -45,6 +46,7 @@ async def handle_voice(message: Message, bot: Bot) -> None:
             await message.answer("Could not transcribe audio")
             return
 
+        # Save to daily file
         timestamp = datetime.fromtimestamp(message.date.timestamp())
         storage.append_to_daily(transcript, timestamp, "[voice]")
 
@@ -58,8 +60,11 @@ async def handle_voice(message: Message, bot: Bot) -> None:
             msg_id=message.message_id,
         )
 
-        await message.answer(f"🎤 {transcript}\n\n✓ Сохранено")
         logger.info("Voice message saved: %d chars", len(transcript))
+
+        # Echo transcription and route through brain
+        await message.answer(f"🎤 <i>{transcript}</i>")
+        await process_with_brain(message, transcript, message.from_user.id)
 
     except Exception as e:
         logger.exception("Error processing voice message")

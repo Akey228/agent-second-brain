@@ -125,13 +125,13 @@ week: {year}-W{week:02d}
                 logger.info("Updated MOC-weekly.md with link to %s", summary_path.stem)
 
     def process_daily(self, day: date | None = None) -> dict[str, Any]:
-        """Process daily file with Claude.
+        """Generate daily summary — what was done today.
 
         Args:
-            day: Date to process (default: today)
+            day: Date to summarize (default: today)
 
         Returns:
-            Processing report as dict
+            Summary report as dict
         """
         if day is None:
             day = date.today()
@@ -145,29 +145,24 @@ week: {year}-W{week:02d}
                 "processed_entries": 0,
             }
 
-        # Load skill content directly (@ references don't work in --print mode)
-        skill_content = self._load_skill_content()
+        prompt = f"""Сегодня {day}. Сгенерируй краткую сводку дня.
 
-        prompt = f"""Сегодня {day}. Выполни ежедневную обработку.
-
-=== SKILL INSTRUCTIONS ===
-{skill_content}
-=== END SKILL ===
-
-ПЕРВЫМ ДЕЛОМ: вызови mcp__todoist__user-info чтобы убедиться что MCP работает.
+Прочитай файл vault/daily/{day}.md и создай краткий отчёт:
+- Сколько записей было (голос, текст, фото, пересылки)
+- Какие задачи были созданы в Todoist (вызови mcp__todoist__find-tasks-by-date startDate: "{day}" daysCount: 1)
+- Какие мысли были сохранены
+- Общий итог дня
 
 CRITICAL MCP RULE:
-- ТЫ ИМЕЕШЬ ДОСТУП к mcp__todoist__* tools — ВЫЗЫВАЙ ИХ НАПРЯМУЮ
-- НИКОГДА не пиши "MCP недоступен" или "добавь вручную"
-- Для задач: вызови mcp__todoist__add-tasks tool
-- Если tool вернул ошибку — покажи ТОЧНУЮ ошибку в отчёте
+- ТЫ ИМЕЕШЬ ДОСТУП к mcp__todoist__* tools — ВЫЗЫВАЙ НАПРЯМУЮ
+- НИКОГДА не пиши "MCP недоступен"
 
-CRITICAL OUTPUT FORMAT:
-- Return ONLY raw HTML for Telegram (parse_mode=HTML)
-- NO markdown: no **, no ## , no ```, no tables
-- Start directly with 📊 <b>Обработка за {day}</b>
-- Allowed tags: <b>, <i>, <code>, <s>, <u>
-- If entries already processed, return status report in same HTML format"""
+ФОРМАТ ОТВЕТА:
+- Raw HTML для Telegram (parse_mode=HTML)
+- НЕ используй markdown
+- Начни с 📊 <b>Сводка за {day}</b>
+- Допустимые теги: <b>, <i>, <code>, <s>, <u>
+- Будь кратким (лимит 4096 символов)"""
 
         try:
             # Pass TODOIST_API_KEY to Claude subprocess
@@ -242,37 +237,41 @@ CRITICAL OUTPUT FORMAT:
         todoist_ref = self._load_todoist_reference()
         session_context = self._get_session_context(user_id)
 
-        prompt = f"""Ты - персональный ассистент d-brain.
+        prompt = f"""Ты — персональный AI-ассистент. Пользователь отправил сообщение через Telegram.
 
-CONTEXT:
-- Текущая дата: {today}
-- Vault path: {self.vault_path}
+КОНТЕКСТ:
+- Дата: {today}
+- Vault: {self.vault_path}
 
 {session_context}=== TODOIST REFERENCE ===
 {todoist_ref}
 === END REFERENCE ===
 
-ПЕРВЫМ ДЕЛОМ: вызови mcp__todoist__user-info чтобы убедиться что MCP работает.
-
-CRITICAL MCP RULE:
-- ТЫ ИМЕЕШЬ ДОСТУП к mcp__todoist__* tools — ВЫЗЫВАЙ ИХ НАПРЯМУЮ
-- НИКОГДА не пиши "MCP недоступен" или "добавь вручную"
-- Если tool вернул ошибку — покажи ТОЧНУЮ ошибку в отчёте
-
-USER REQUEST:
+СООБЩЕНИЕ ПОЛЬЗОВАТЕЛЯ:
 {user_prompt}
 
-CRITICAL OUTPUT FORMAT:
-- Return ONLY raw HTML for Telegram (parse_mode=HTML)
-- NO markdown: no **, no ##, no ```, no tables, no -
-- Start with emoji and <b>header</b>
-- Allowed tags: <b>, <i>, <code>, <s>, <u>
-- Be concise - Telegram has 4096 char limit
+АЛГОРИТМ:
+1. Пойми намерение пользователя
+2. ДЕЙСТВУЙ:
+   - ЗАДАЧА (создай, напомни, запланируй, не забудь) → создай в Todoist через mcp__todoist__add-tasks
+   - ЗАМЕТКА/МЫСЛЬ (идея, понял, осознал, интересно) → сохрани в vault/thoughts/ через Write tool
+   - ВОПРОС → ответь на него
+   - ПРОСТО РАЗГОВОР → ответь естественно
+3. Ответь кратко
 
-EXECUTION:
-1. Analyze the request
-2. Call MCP tools directly (mcp__todoist__*, read/write files)
-3. Return HTML status report with results"""
+MCP ПРАВИЛА:
+- ТЫ ИМЕЕШЬ ДОСТУП к mcp__todoist__* tools — ВЫЗЫВАЙ НАПРЯМУЮ
+- НИКОГДА не пиши "MCP недоступен"
+- При ошибке — покажи ТОЧНУЮ ошибку
+
+ФОРМАТ ОТВЕТА:
+- Raw HTML для Telegram (parse_mode=HTML)
+- НЕ используй markdown (**, ##, ```, таблицы)
+- Допустимые теги: <b>, <i>, <code>, <s>, <u>
+- Отвечай кратко и по делу (лимит 4096 символов)
+- Если создал задачу — подтверди: ✅ Задача создана: название (дата)
+- Если сохранил мысль — подтверди: 📓 Сохранено: название
+- Если просто отвечаешь — отвечай без лишних заголовков"""
 
         try:
             env = os.environ.copy()

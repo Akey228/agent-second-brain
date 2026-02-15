@@ -1,4 +1,4 @@
-"""Photo message handler."""
+"""Photo message handler — save and route through brain."""
 
 import logging
 from datetime import datetime
@@ -6,6 +6,7 @@ from datetime import datetime
 from aiogram import Bot, Router
 from aiogram.types import Message
 
+from d_brain.bot.brain import process_with_brain
 from d_brain.config import get_settings
 from d_brain.services.session import SessionStore
 from d_brain.services.storage import VaultStorage
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @router.message(lambda m: m.photo is not None)
 async def handle_photo(message: Message, bot: Bot) -> None:
-    """Handle photo messages."""
+    """Handle photo messages — save and route through Claude brain."""
     if not message.photo or not message.from_user:
         return
 
@@ -70,8 +71,11 @@ async def handle_photo(message: Message, bot: Bot) -> None:
             msg_id=message.message_id,
         )
 
-        await message.answer("📷 ✓ Сохранено")
         logger.info("Photo saved: %s", relative_path)
+
+        # Route through brain
+        brain_text = message.caption or "Пользователь отправил фото без подписи."
+        await process_with_brain(message, brain_text, message.from_user.id)
 
     except Exception as e:
         logger.exception("Error processing photo")

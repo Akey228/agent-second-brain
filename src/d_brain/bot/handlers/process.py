@@ -1,4 +1,4 @@
-"""Process command handler."""
+"""Process command handler — daily summary."""
 
 import asyncio
 import logging
@@ -19,17 +19,16 @@ logger = logging.getLogger(__name__)
 
 @router.message(Command("process"))
 async def cmd_process(message: Message) -> None:
-    """Handle /process command - trigger Claude processing."""
+    """Handle /process command — generate daily summary."""
     user_id = message.from_user.id if message.from_user else "unknown"
     logger.info("Process command triggered by user %s", user_id)
 
-    status_msg = await message.answer("⏳ Processing... (may take up to 10 min)")
+    status_msg = await message.answer("📊 Готовлю сводку дня...")
 
     settings = get_settings()
     processor = ClaudeProcessor(settings.vault_path, settings.todoist_api_key)
     git = VaultGit(settings.vault_path)
 
-    # Run subprocess in thread to avoid blocking event loop
     async def process_with_progress() -> dict:
         task = asyncio.create_task(
             asyncio.to_thread(processor.process_daily, date.today())
@@ -42,10 +41,10 @@ async def cmd_process(message: Message) -> None:
             if not task.done():
                 try:
                     await status_msg.edit_text(
-                        f"⏳ Processing... ({elapsed // 60}m {elapsed % 60}s)"
+                        f"📊 Готовлю сводку... ({elapsed // 60}m {elapsed % 60}s)"
                     )
                 except Exception:
-                    pass  # Ignore edit errors
+                    pass
 
         return await task
 
@@ -54,12 +53,11 @@ async def cmd_process(message: Message) -> None:
     # Commit and push changes
     if "error" not in report:
         today = date.today().isoformat()
-        await asyncio.to_thread(git.commit_and_push, f"chore: process daily {today}")
+        await asyncio.to_thread(git.commit_and_push, f"chore: daily summary {today}")
 
     # Format and send report
     formatted = format_process_report(report)
     try:
         await status_msg.edit_text(formatted)
     except Exception:
-        # Fallback: send without HTML parsing
         await status_msg.edit_text(formatted, parse_mode=None)
