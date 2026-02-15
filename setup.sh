@@ -385,14 +385,72 @@ install_dependencies() {
     success "Dependencies installed"
 }
 
+configure_mcp() {
+    step "Configuring MCP (Todoist integration for Claude)"
+
+    MCP_FILE="$PROJECT_DIR/mcp-config.json"
+
+    if [ -n "$TODOIST_API_KEY" ]; then
+        cat > "$MCP_FILE" << EOF
+{
+  "mcpServers": {
+    "todoist": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@doist/todoist-ai"],
+      "env": {
+        "TODOIST_API_KEY": "$TODOIST_API_KEY"
+      }
+    }
+  }
+}
+EOF
+        success "MCP config created with Todoist API key"
+    else
+        warn "No Todoist API key — MCP config left as default (without auth)"
+    fi
+}
+
+fix_script_paths() {
+    step "Fixing script paths for current user"
+
+    PROCESS_SCRIPT="$PROJECT_DIR/scripts/process.sh"
+
+    if [ -f "$PROCESS_SCRIPT" ]; then
+        # Replace hardcoded /home/shima with actual HOME
+        sed -i "s|export HOME=\"/home/shima\"|export HOME=\"$HOME\"|g" "$PROCESS_SCRIPT"
+        sed -i "s|/home/shima/projects/agent-second-brain|$PROJECT_DIR|g" "$PROCESS_SCRIPT"
+
+        chmod +x "$PROCESS_SCRIPT"
+        success "process.sh paths updated for user $USER"
+    else
+        warn "scripts/process.sh not found — skipping"
+    fi
+}
+
+clean_vault() {
+    step "Cleaning vault example data"
+
+    cd "$PROJECT_DIR"
+
+    rm -rf vault/daily/* 2>/dev/null || true
+    rm -rf vault/thoughts/ideas/* 2>/dev/null || true
+    rm -rf vault/thoughts/projects/* 2>/dev/null || true
+    rm -rf vault/thoughts/learnings/* 2>/dev/null || true
+    rm -rf vault/thoughts/reflections/* 2>/dev/null || true
+    rm -rf vault/summaries/* 2>/dev/null || true
+    rm -rf vault/attachments/* 2>/dev/null || true
+
+    success "Vault example data cleaned"
+}
+
 configure_systemd() {
-    step "Configuring systemd service"
+    step "Configuring systemd services and timers"
 
-    SERVICE_FILE="/etc/systemd/system/d-brain-bot.service"
-    SERVICE_NAME="d-brain-bot"
-
-    # Generate service file content
-    SERVICE_CONTENT="[Unit]
+    # --- 1. Bot service (24/7) ---
+    info "Creating bot service..."
+    cat << EOF | sudo tee /etc/systemd/system/d-brain-bot.service > /dev/null
+[Unit]
 Description=d-brain Telegram Bot
 After=network.target
 
@@ -406,24 +464,85 @@ RestartSec=10
 Environment=PYTHONUNBUFFERED=1
 
 [Install]
-WantedBy=multi-user.target"
+WantedBy=multi-user.target
+EOF
 
-    info "Creating systemd service..."
-    echo "$SERVICE_CONTENT" | sudo tee "$SERVICE_FILE" > /dev/null
+    # --- 2. Daily processing service + timer ---
+    info "Creating daily processing service..."
+    cat << EOF | sudo tee /etc/systemd/system/d-brain-process.service > /dev/null
+[Unit]
+Description=d-brain Daily Processing
 
+[Service]
+Type=oneshot
+User=$USER
+WorkingDirectory=$PROJECT_DIR
+ExecStart=$PROJECT_DIR/scripts/process.sh
+Environment=PYTHONUNBUFFERED=1
+EOF
+
+    info "Creating daily processing timer (21:00)..."
+    cat << EOF | sudo tee /etc/systemd/system/d-brain-process.timer > /dev/null
+[Unit]
+Description=Run d-brain processing daily at 21:00
+
+[Timer]
+OnCalendar=*-*-* 21:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+
+    # --- 3. Weekly digest service + timer ---
+    info "Creating weekly digest service..."
+    cat << EOF | sudo tee /etc/systemd/system/d-brain-weekly.service > /dev/null
+[Unit]
+Description=d-brain Weekly Digest
+After=network.target
+
+[Service]
+Type=oneshot
+User=$USER
+WorkingDirectory=$PROJECT_DIR
+ExecStart=$HOME/.local/bin/uv run python scripts/weekly.py
+EnvironmentFile=$PROJECT_DIR/.env
+StandardOutput=journal
+StandardError=journal
+EOF
+
+    info "Creating weekly digest timer (Friday 06:00)..."
+    cat << EOF | sudo tee /etc/systemd/system/d-brain-weekly.timer > /dev/null
+[Unit]
+Description=Run d-brain weekly digest Friday morning
+
+[Timer]
+OnCalendar=Fri 06:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+
+    # --- Reload and enable all ---
     info "Reloading systemd daemon..."
     sudo systemctl daemon-reload
 
-    info "Enabling service to start on boot..."
-    sudo systemctl enable "$SERVICE_NAME"
+    info "Enabling and starting bot service..."
+    sudo systemctl enable d-brain-bot
+    sudo systemctl start d-brain-bot
 
-    info "Starting service..."
-    sudo systemctl start "$SERVICE_NAME"
+    info "Enabling and starting daily processing timer..."
+    sudo systemctl enable d-brain-process.timer
+    sudo systemctl start d-brain-process.timer
 
-    # Wait a moment for service to start
+    info "Enabling and starting weekly digest timer..."
+    sudo systemctl enable d-brain-weekly.timer
+    sudo systemctl start d-brain-weekly.timer
+
     sleep 2
 
-    success "Systemd service configured"
+    success "All systemd services and timers configured"
 }
 
 configure_git_remote() {
@@ -526,6 +645,30 @@ check_status() {
         ERRORS+=("Bot service not running (status: $STATUS)")
     fi
 
+    # Check timers
+    if systemctl is-active --quiet d-brain-process.timer; then
+        success "Daily processing timer: active"
+    else
+        WARNINGS+=("Daily processing timer not active")
+    fi
+
+    if systemctl is-active --quiet d-brain-weekly.timer; then
+        success "Weekly digest timer: active"
+    else
+        WARNINGS+=("Weekly digest timer not active")
+    fi
+
+    # Check MCP config
+    if [ -f "$PROJECT_DIR/mcp-config.json" ]; then
+        if grep -q "TODOIST_API_KEY" "$PROJECT_DIR/mcp-config.json" 2>/dev/null; then
+            success "MCP config: Todoist connected"
+        else
+            WARNINGS+=("MCP config exists but Todoist not configured")
+        fi
+    else
+        WARNINGS+=("MCP config not found")
+    fi
+
     echo ""
 
     # Summary
@@ -538,15 +681,23 @@ check_status() {
         echo "  ╚═══════════════════════════════════════════════════════════╝"
         echo -e "${NC}"
         echo ""
+        echo "  What's running:"
+        echo "    - Bot:        24/7 (listens to Telegram)"
+        echo "    - Processing: daily at 21:00 (Claude analyzes your notes)"
+        echo "    - Digest:     Friday at 06:00 (weekly summary)"
+        echo ""
         echo "  Next steps:"
-        echo "    1. Open Telegram and find your bot"
-        echo "    2. Send /start to test"
-        echo "    3. Send a voice message!"
+        echo "    1. Run: claude auth login (authenticate Claude)"
+        echo "    2. Open Telegram and find your bot"
+        echo "    3. Send /start to test"
+        echo "    4. Send a voice message!"
         echo ""
         echo "  Useful commands:"
-        echo "    - View logs:    sudo journalctl -u d-brain-bot -f"
-        echo "    - Restart bot:  sudo systemctl restart d-brain-bot"
-        echo "    - Stop bot:     sudo systemctl stop d-brain-bot"
+        echo "    - View logs:      sudo journalctl -u d-brain-bot -f"
+        echo "    - Restart bot:    sudo systemctl restart d-brain-bot"
+        echo "    - Stop bot:       sudo systemctl stop d-brain-bot"
+        echo "    - Check timers:   sudo systemctl list-timers | grep d-brain"
+        echo "    - Manual process: $PROJECT_DIR/scripts/process.sh"
         echo ""
     else
         if [ ${#ERRORS[@]} -gt 0 ]; then
@@ -604,9 +755,11 @@ main() {
     echo "This script will:"
     echo "  1. Install required software (Python, Node.js, uv, Claude CLI)"
     echo "  2. Clone your fork of the repository"
-    echo "  3. Ask for your API tokens"
-    echo "  4. Create configuration files"
-    echo "  5. Set up auto-start service"
+    echo "  3. Ask for your API tokens (Telegram, Deepgram, Todoist)"
+    echo "  4. Create configuration files (.env, MCP config)"
+    echo "  5. Set up auto-start service (bot 24/7)"
+    echo "  6. Set up daily processing timer (21:00)"
+    echo "  7. Set up weekly digest timer (Friday 06:00)"
     echo ""
 
     read -p "Ready to start? (Y/n): " -r REPLY
@@ -626,7 +779,10 @@ main() {
     clone_repository
     collect_tokens
     create_env_file
+    configure_mcp
     install_dependencies
+    fix_script_paths
+    clean_vault
     configure_systemd
     configure_git_remote
     authorize_claude

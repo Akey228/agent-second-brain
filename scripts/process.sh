@@ -3,10 +3,10 @@ set -e
 
 # PATH for systemd (claude, uv, npx in ~/.local/bin and node)
 export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
-export HOME="/home/shima"
+export HOME="${HOME:-/home/$(whoami)}"
 
 # Paths
-PROJECT_DIR="/home/shima/projects/agent-second-brain"
+PROJECT_DIR="${PROJECT_DIR:-$HOME/projects/agent-second-brain}"
 VAULT_DIR="$PROJECT_DIR/vault"
 ENV_FILE="$PROJECT_DIR/.env"
 
