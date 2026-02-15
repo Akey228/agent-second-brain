@@ -3,7 +3,11 @@
     "todoist": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@doist/todoist-ai"]
+      "args": ["-y", "@doist/todoist-ai"],
+      "env": {
+        "TODOIST_API_KEY": "74a57d3cf0f9b42b964dd21c23eeed174bc272c8"
+      }
     }
   }
 }
+

@@ -1,0 +1,18 @@
+[0;1;32m●[0m d-brain-bot.service - d-brain Telegram Bot
+     Loaded: loaded (]8;;file://vm780087.hosted-by.u1host.com/etc/systemd/system/d-brain-bot.service/etc/systemd/system/d-brain-bot.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Sun 2026-02-15 10:47:11 EET; 5min ago
+   Main PID: 21505 (uv)
+      Tasks: 4 (limit: 1060)
+     Memory: 117.6M (peak: 119.0M)
+        CPU: 4.939s
+     CGroup: /system.slice/d-brain-bot.service
+             ├─[0;38;5;245m21505 /home/nikita/.local/bin/uv run python -m d_brain[0m
+             └─[0;38;5;245m21509 /home/nikita/projects/agent-second-brain/.venv/bin/python3 -m d_brain[0m
+
+Feb 15 10:47:11 vm780087.hosted-by.u1host.com systemd[1]: Started d-brain-bot.service - d-brain Telegram Bot.
+Feb 15 10:47:15 vm780087.hosted-by.u1host.com uv[21509]: 2026-02-15 10:47:15,960 - __main__ - INFO - d-brain starting...
+Feb 15 10:47:15 vm780087.hosted-by.u1host.com uv[21509]: 2026-02-15 10:47:15,961 - __main__ - INFO - Vault path: vault
+Feb 15 10:47:15 vm780087.hosted-by.u1host.com uv[21509]: 2026-02-15 10:47:15,962 - __main__ - INFO - Allowed users: [1887929462]
+Feb 15 10:47:16 vm780087.hosted-by.u1host.com uv[21509]: 2026-02-15 10:47:16,686 - d_brain.bot.main - INFO - Starting bot polling...
+Feb 15 10:47:16 vm780087.hosted-by.u1host.com uv[21509]: 2026-02-15 10:47:16,686 - aiogram.dispatcher - INFO - Start polling
+Feb 15 10:47:16 vm780087.hosted-by.u1host.com uv[21509]: 2026-02-15 10:47:16,810 - aiogram.dispatcher - INFO - Run polling for bot @nikitkaaAkeyBot id=8363344885 - 'Ассистент'
