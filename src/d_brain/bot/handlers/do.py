@@ -8,7 +8,7 @@ from aiogram.filters import Command, CommandObject
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from d_brain.bot.formatters import format_process_report
+from d_brain.bot.formatters import format_process_report, send_long_message
 from d_brain.bot.states import DoCommandState
 from d_brain.config import get_settings
 from d_brain.services.processor import ClaudeProcessor
@@ -72,7 +72,7 @@ async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None
             return
 
         # Echo transcription to user
-        await message.answer(f"<i>{prompt}</i>")
+        await send_long_message(message, f"<i>{prompt}</i>")
 
     # Handle text input
     elif message.text:
@@ -115,8 +115,11 @@ async def process_request(message: Message, prompt: str, user_id: int = 0) -> No
     report = await run_with_progress()
 
     formatted = format_process_report(report)
-    try:
-        await status_msg.edit_text(formatted)
-    except Exception:
-        # Fallback: send without HTML parsing
-        await status_msg.edit_text(formatted, parse_mode=None)
+    if len(formatted) <= 4096:
+        try:
+            await status_msg.edit_text(formatted)
+        except Exception:
+            await status_msg.edit_text(formatted, parse_mode=None)
+    else:
+        await status_msg.delete()
+        await send_long_message(message, formatted)

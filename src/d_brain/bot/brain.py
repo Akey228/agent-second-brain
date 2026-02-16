@@ -5,7 +5,7 @@ import logging
 
 from aiogram.types import Message
 
-from d_brain.bot.formatters import format_process_report
+from d_brain.bot.formatters import format_process_report, send_long_message
 from d_brain.config import get_settings
 from d_brain.services.processor import ClaudeProcessor
 
@@ -47,10 +47,4 @@ async def process_with_brain(message: Message, user_text: str, user_id: int = 0)
     result = await task
 
     formatted = format_process_report(result)
-    try:
-        await message.answer(formatted)
-    except Exception:
-        try:
-            await message.answer(formatted, parse_mode=None)
-        except Exception:
-            logger.exception("Failed to send brain response")
+    await send_long_message(message, formatted)

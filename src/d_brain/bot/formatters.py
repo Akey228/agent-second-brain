@@ -1,8 +1,14 @@
 """Report formatters for Telegram messages."""
 
+import asyncio
 import html
+import logging
 import re
 from typing import Any
+
+from aiogram.types import Message
+
+logger = logging.getLogger(__name__)
 
 
 # Allowed HTML tags in Telegram
@@ -97,37 +103,12 @@ def validate_telegram_html(text: str) -> bool:
     return len(tag_stack) == 0
 
 
-def truncate_html(text: str, max_length: int = 4096) -> str:
-    """Truncate HTML text while keeping tags balanced.
-
-    Args:
-        text: HTML text
-        max_length: Maximum length (Telegram limit is 4096)
-
-    Returns:
-        Truncated text with balanced tags
-    """
-    if len(text) <= max_length:
-        return text
-
-    # Find a safe cut point
-    cut_point = max_length - 50  # Leave room for closing tags and ellipsis
-
-    # Don't cut in the middle of a tag
-    last_open = text.rfind("<", 0, cut_point)
-    last_close = text.rfind(">", 0, cut_point)
-
-    if last_open > last_close:
-        # We're in the middle of a tag, cut before it
-        cut_point = last_open
-
-    truncated = text[:cut_point]
-
-    # Close any open tags
+def _get_open_tags(text: str) -> list[str]:
+    """Return list of currently open HTML tags in order."""
     tag_pattern = re.compile(r"<(/?)([a-zA-Z]+)(?:\s[^>]*)?>")
-    open_tags = []
+    open_tags: list[str] = []
 
-    for match in tag_pattern.finditer(truncated):
+    for match in tag_pattern.finditer(text):
         is_closing = match.group(1) == "/"
         tag_name = match.group(2).lower()
 
@@ -139,10 +120,95 @@ def truncate_html(text: str, max_length: int = 4096) -> str:
         elif not is_closing:
             open_tags.append(tag_name)
 
-    # Add closing tags in reverse order
-    closing_tags = "".join(f"</{tag}>" for tag in reversed(open_tags))
+    return open_tags
 
-    return truncated + "..." + closing_tags
+
+def split_html(text: str, max_length: int = 4096) -> list[str]:
+    """Split HTML text into chunks that fit Telegram's message limit.
+
+    Splits on sentence boundaries when possible, keeps tags balanced
+    across chunks by re-opening tags at the start of each new chunk.
+
+    Args:
+        text: HTML text to split
+        max_length: Maximum length per chunk (Telegram limit is 4096)
+
+    Returns:
+        List of HTML chunks, each within max_length
+    """
+    if len(text) <= max_length:
+        return [text]
+
+    chunks: list[str] = []
+    remaining = text
+
+    while remaining:
+        if len(remaining) <= max_length:
+            chunks.append(remaining)
+            break
+
+        # Leave room for closing/opening tags
+        cut_point = max_length - 100
+
+        # Don't cut in the middle of a tag
+        last_open = remaining.rfind("<", 0, cut_point)
+        last_close = remaining.rfind(">", 0, cut_point)
+        if last_open > last_close:
+            cut_point = last_open
+
+        # Try to cut at a sentence boundary (. ! ? followed by space or newline)
+        sentence_end = -1
+        for pattern in [". ", ".\n", "! ", "!\n", "? ", "?\n"]:
+            pos = remaining.rfind(pattern, 0, cut_point)
+            if pos > cut_point // 2:  # Only if reasonably far into the chunk
+                sentence_end = max(sentence_end, pos + 1)
+
+        # Try paragraph boundary
+        para_end = remaining.rfind("\n\n", 0, cut_point)
+        if para_end > cut_point // 2:
+            sentence_end = max(sentence_end, para_end)
+
+        if sentence_end > 0:
+            cut_point = sentence_end
+
+        chunk = remaining[:cut_point]
+        remaining = remaining[cut_point:].lstrip()
+
+        # Close open tags in this chunk
+        open_tags = _get_open_tags(chunk)
+        closing = "".join(f"</{tag}>" for tag in reversed(open_tags))
+        chunk += closing
+
+        chunks.append(chunk)
+
+        # Re-open tags at start of next chunk
+        if remaining and open_tags:
+            opening = "".join(f"<{tag}>" for tag in open_tags)
+            remaining = opening + remaining
+
+    return chunks
+
+
+async def send_long_message(
+    message: Message, text: str, parse_mode: str | None = "HTML"
+) -> None:
+    """Send a message that may exceed Telegram's 4096 char limit.
+
+    Splits into multiple messages if needed. Falls back to plain text
+    on parse errors.
+    """
+    chunks = split_html(text) if parse_mode else [text[i:i + 4096] for i in range(0, len(text), 4096)]
+
+    for chunk in chunks:
+        try:
+            await message.answer(chunk, parse_mode=parse_mode)
+        except Exception:
+            try:
+                await message.answer(chunk, parse_mode=None)
+            except Exception:
+                logger.exception("Failed to send message chunk (%d chars)", len(chunk))
+        if len(chunks) > 1:
+            await asyncio.sleep(0.3)
 
 
 def format_process_report(report: dict[str, Any]) -> str:
@@ -172,8 +238,7 @@ def format_process_report(report: dict[str, Any]) -> str:
             # Fall back to plain text if tags are broken
             return html.escape(raw_report)
 
-        # Truncate if too long
-        return truncate_html(sanitized, max_length=4096)
+        return sanitized
 
     return "[OK] <b>Обработка завершена</b>"
 

@@ -8,7 +8,7 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from d_brain.bot.formatters import format_process_report
+from d_brain.bot.formatters import format_process_report, send_long_message
 from d_brain.config import get_settings
 from d_brain.services.git import VaultGit
 from d_brain.services.processor import ClaudeProcessor
@@ -57,7 +57,11 @@ async def cmd_process(message: Message) -> None:
 
     # Format and send report
     formatted = format_process_report(report)
-    try:
-        await status_msg.edit_text(formatted)
-    except Exception:
-        await status_msg.edit_text(formatted, parse_mode=None)
+    if len(formatted) <= 4096:
+        try:
+            await status_msg.edit_text(formatted)
+        except Exception:
+            await status_msg.edit_text(formatted, parse_mode=None)
+    else:
+        await status_msg.delete()
+        await send_long_message(message, formatted)

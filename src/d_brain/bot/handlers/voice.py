@@ -7,6 +7,7 @@ from aiogram import Bot, Router
 from aiogram.types import Message
 
 from d_brain.bot.brain import process_with_brain
+from d_brain.bot.formatters import send_long_message
 from d_brain.config import get_settings
 from d_brain.services.session import SessionStore
 from d_brain.services.storage import VaultStorage
@@ -63,7 +64,7 @@ async def handle_voice(message: Message, bot: Bot) -> None:
         logger.info("Voice message saved: %d chars", len(transcript))
 
         # Echo transcription and route through brain
-        await message.answer(f"<i>{transcript}</i>")
+        await send_long_message(message, f"<i>{transcript}</i>")
         await process_with_brain(message, transcript, message.from_user.id)
 
     except Exception as e:
