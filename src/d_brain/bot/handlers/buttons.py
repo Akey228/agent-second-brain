@@ -38,7 +38,7 @@ async def btn_do(message: Message, state: FSMContext) -> None:
     """Handle Do button - set state and wait for input."""
     await state.set_state(DoCommandState.waiting_for_input)
     await message.answer(
-        "🎯 <b>Что сделать?</b>\n\n"
+        "<b>Что сделать?</b>\n\n"
         "Отправь голосовое или текстовое сообщение с запросом."
     )
 

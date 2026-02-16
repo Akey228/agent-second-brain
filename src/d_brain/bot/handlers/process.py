@@ -23,7 +23,7 @@ async def cmd_process(message: Message) -> None:
     user_id = message.from_user.id if message.from_user else "unknown"
     logger.info("Process command triggered by user %s", user_id)
 
-    status_msg = await message.answer("📊 Готовлю сводку дня...")
+    status_msg = await message.answer("Готовлю сводку дня...")
 
     settings = get_settings()
     processor = ClaudeProcessor(settings.vault_path, settings.todoist_api_key)
@@ -41,7 +41,7 @@ async def cmd_process(message: Message) -> None:
             if not task.done():
                 try:
                     await status_msg.edit_text(
-                        f"📊 Готовлю сводку... ({elapsed // 60}m {elapsed % 60}s)"
+                        f"Готовлю сводку... ({elapsed // 60}m {elapsed % 60}s)"
                     )
                 except Exception:
                     pass

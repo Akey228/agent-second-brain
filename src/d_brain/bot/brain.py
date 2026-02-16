@@ -20,37 +20,37 @@ async def process_with_brain(message: Message, user_text: str, user_id: int = 0)
         user_text: Text to process (transcription, raw text, caption, etc.)
         user_id: Telegram user ID for session context
     """
-    status_msg = await message.answer("💭")
-
     settings = get_settings()
     processor = ClaudeProcessor(settings.vault_path, settings.todoist_api_key)
 
-    async def run_with_progress() -> dict:
-        task = asyncio.create_task(
-            asyncio.to_thread(processor.execute_prompt, user_text, user_id)
-        )
+    # Send typing immediately before starting processing
+    try:
+        await message.bot.send_chat_action(chat_id=message.chat.id, action="typing")
+    except Exception as e:
+        logger.warning("Failed to send initial typing action: %s", e)
 
-        elapsed = 0
-        while not task.done():
-            await asyncio.sleep(30)
-            elapsed += 30
-            if not task.done():
-                try:
-                    mins = elapsed // 60
-                    secs = elapsed % 60
-                    await status_msg.edit_text(f"💭 {mins}m {secs}s...")
-                except Exception:
-                    pass
+    task = asyncio.create_task(
+        asyncio.to_thread(processor.execute_prompt, user_text, user_id)
+    )
 
-        return await task
+    # Keep sending "typing..." every 4 seconds while model is thinking
+    while not task.done():
+        await asyncio.sleep(4)
+        if not task.done():
+            try:
+                await message.bot.send_chat_action(
+                    chat_id=message.chat.id, action="typing"
+                )
+            except Exception as e:
+                logger.warning("Failed to send typing action in loop: %s", e)
 
-    result = await run_with_progress()
+    result = await task
 
     formatted = format_process_report(result)
     try:
-        await status_msg.edit_text(formatted)
+        await message.answer(formatted)
     except Exception:
         try:
-            await status_msg.edit_text(formatted, parse_mode=None)
+            await message.answer(formatted, parse_mode=None)
         except Exception:
             logger.exception("Failed to send brain response")

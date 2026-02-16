@@ -44,17 +44,17 @@ Use consistent progress format:
 
 | Symbol | Meaning |
 |--------|---------|
-| 🔴 | 0-25% — Not started |
-| 🟡 | 26-50% — In progress |
-| 🟢 | 51-75% — Good progress |
-| ✅ | 76-100% — Complete |
+| [--] | 0-25% — Not started |
+| [~] | 26-50% — In progress |
+| [+] | 51-75% — Good progress |
+| [v] | 76-100% — Complete |
 
 Example:
 ```markdown
 | Goal | Progress | Status |
 |------|----------|--------|
-| Ship MVP | 65% | 🟢 |
-| Fitness routine | 30% | 🟡 |
+| Ship MVP | 65% | [+] |
+| Fitness routine | 30% | [~] |
 ```
 
 ## ONE Big Thing

@@ -93,30 +93,30 @@ MOC structure:
 Format: Telegram HTML
 
 ```html
-🗂️ <b>Vault Organization Report</b>
+<b>Vault Organization Report</b>
 
-<b>📊 Статистика:</b>
-• Всего заметок: {N}
-• В thoughts/: {M}
-• В daily/: {K}
+<b>Статистика:</b>
+- Всего заметок: {N}
+- В thoughts/: {M}
+- В daily/: {K}
 
-<b>🔗 Связность:</b>
-• Связанных: {connected}%
-• Изолированных: {orphans}
+<b>Связность:</b>
+- Связанных: {connected}%
+- Изолированных: {orphans}
 
-<b>📭 Orphan Notes:</b>
+<b>Orphan Notes:</b>
 {for each orphan:}
-• {note_title}
-  → Предложение: [[{suggested_link}]]
+- {note_title}
+  -- Предложение: [[{suggested_link}]]
 
-<b>🔄 Возможные дубликаты:</b>
+<b>Возможные дубликаты:</b>
 {for each duplicate pair:}
-• {note1} ≈ {note2}
+- {note1} ~ {note2}
 
-<b>📑 MOC Updates:</b>
-• {moc_name}: +{added} / -{removed}
+<b>MOC Updates:</b>
+- {moc_name}: +{added} / -{removed}
 
-<b>💡 Рекомендации:</b>
+<b>Рекомендации:</b>
 {actionable suggestions}
 ```
 

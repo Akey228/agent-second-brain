@@ -168,7 +168,7 @@ def format_suggestions(suggestions: dict) -> str:
 def format_html(suggestions: dict) -> str:
     """Format suggestions as Telegram HTML."""
     if not suggestions:
-        return "✅ <b>No link suggestions</b>\n\nVault is well-connected!"
+        return "<b>No link suggestions</b>\n\nVault is well-connected!"
 
     total = sum(len(v) for v in suggestions.values())
 

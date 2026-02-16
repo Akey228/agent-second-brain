@@ -63,7 +63,7 @@ async def handle_voice(message: Message, bot: Bot) -> None:
         logger.info("Voice message saved: %d chars", len(transcript))
 
         # Echo transcription and route through brain
-        await message.answer(f"🎤 <i>{transcript}</i>")
+        await message.answer(f"<i>{transcript}</i>")
         await process_with_brain(message, transcript, message.from_user.id)
 
     except Exception as e:

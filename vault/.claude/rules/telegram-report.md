@@ -38,77 +38,79 @@ The output goes directly to Telegram `parse_mode=HTML`. Any markdown syntax will
 - Unsupported tags: `<div>`, `<span>`, `<br>`, `<p>`, `<table>`
 - Unescaped `<` and `>` in text (use `&lt;` `&gt;`)
 - Nested same tags: `<b><b>text</b></b>`
+- Emojis (user preference: no emojis anywhere)
 
 ## Report Template
 
-📊 <b>Обработка за {DATE}</b>
+<b>Обработка за {DATE}</b>
 
-<b>🎯 Текущий фокус:</b>
+<b>Текущий фокус:</b>
 {ONE_BIG_THING from goals/3-weekly.md}
 
-<b>📓 Сохранено мыслей:</b> {N}
-• {emoji} {title} → {category}/
+<b>Сохранено мыслей:</b> {N}
+- {title} -- {category}/
 
-<b>✅ Создано задач:</b> {M}
-• {task_name} <i>({priority}, {due_date})</i>
+<b>Создано задач:</b> {M}
+- {task_name} <i>({priority}, {due_date})</i>
 
-<b>📅 Загрузка на неделю:</b>
+<b>Загрузка на неделю:</b>
 Пн: {n} | Вт: {n} | Ср: {n} | Чт: {n} | Пт: {n} | Сб: {n} | Вс: {n}
 
-<b>⚠️ Требует внимания:</b>
-• {count} просроченных задач
-• Цель "{goal}" без активности {days} дней
+<b>Требует внимания:</b>
+- {count} просроченных задач
+- Цель "{goal}" без активности {days} дней
 
-<b>🔗 Новые связи:</b>
-• [[Note A]] ↔ [[Note B]]
+<b>Новые связи:</b>
+- [[Note A]] -- [[Note B]]
 
-<b>⚡ Топ-3 приоритета на завтра:</b>
+<b>Топ-3 приоритета на завтра:</b>
 1. {task} <i>({goal link if exists})</i>
 2. {task}
 3. {task}
 
-<b>📈 Прогресс по целям:</b>
-• {goal}: {progress}% {status_emoji}
+<b>Прогресс по целям:</b>
+- {goal}: {progress}% {status_text}
 
 ---
 <i>Обработано за {time}</i>
 
-## Section Emojis
+## Section Headers
 
-📊 Title
-🎯 Focus
-📓 Thoughts saved
-✅ Tasks created
-📅 Week load
-⚠️ Attention needed
-🔗 New links
-⚡ Priorities
-📈 Goal progress
+Use plain text headers without emojis:
+- Title
+- Focus
+- Thoughts saved
+- Tasks created
+- Week load
+- Attention needed
+- New links
+- Priorities
+- Goal progress
 
-## Category Emojis (Thoughts)
+## Category Labels (Thoughts)
 
-💡 idea
-🪞 reflection
-🎯 project
-📚 learning
+- idea
+- reflection
+- project
+- learning
 
 ## Priority Format
 
-p1 → <i>(p1, urgent)</i>
-p2 → <i>(p2, {date})</i>
-p3 → <i>(p3, {date})</i>
-p4 → <i>(no priority)</i>
+p1 -- <i>(p1, urgent)</i>
+p2 -- <i>(p2, {date})</i>
+p3 -- <i>(p3, {date})</i>
+p4 -- <i>(no priority)</i>
 
-## Progress Emojis
+## Progress Labels
 
-🔴 0-25%
-🟡 26-50%
-🟢 51-75%
-✅ 76-100%
+- 0-25% -- "не начато"
+- 26-50% -- "в процессе"
+- 51-75% -- "хороший прогресс"
+- 76-100% -- "выполнено"
 
 ## Error Report
 
-❌ <b>Ошибка обработки</b>
+<b>Ошибка обработки</b>
 
 <b>Причина:</b> {error_message}
 
@@ -118,7 +120,7 @@ p4 → <i>(no priority)</i>
 
 ## Empty Report
 
-📭 <b>Нет записей для обработки</b>
+<b>Нет записей для обработки</b>
 
 Файл <code>daily/{date}.md</code> пуст или не найден.
 
@@ -131,6 +133,7 @@ Before sending report:
 2. No raw < or > in text
 3. No markdown syntax anywhere
 4. No tables
-5. Total length under 4096 characters
+5. No emojis
+6. Total length under 4096 characters
 
 If over 4096 chars, truncate "Новые связи" section first.

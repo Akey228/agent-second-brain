@@ -55,18 +55,18 @@ mcp__todoist__find-tasks-by-date — Check workload
    3 ошибки подряд? → Покажи ТОЧНЫЙ текст ошибки
 
 ### ЗАПРЕЩЕНО:
-- ❌ Писать "MCP недоступен"
-- ❌ Предлагать "добавь вручную"
-- ❌ Использовать subprocess для вызова CLI
-- ❌ Делать HTTP запросы к API напрямую
-- ❌ Выводить команды для копирования
-- ❌ Решать что не работает БЕЗ вызова tool
+- Писать "MCP недоступен"
+- Предлагать "добавь вручную"
+- Использовать subprocess для вызова CLI
+- Делать HTTP запросы к API напрямую
+- Выводить команды для копирования
+- Решать что не работает БЕЗ вызова tool
 
 ### ОБЯЗАТЕЛЬНО:
-- ✅ Вызывать MCP tool напрямую
-- ✅ Если ошибка — подождать, вызвать снова
-- ✅ 3 retry перед любыми выводами
-- ✅ Если task создан — включить task ID в отчёт
+- Вызывать MCP tool напрямую
+- Если ошибка — подождать, вызвать снова
+- 3 retry перед любыми выводами
+- Если task создан — включить task ID в отчёт
 
 При ошибке MCP tool — показать ТОЧНУЮ ошибку от tool, не придумывать отговорки.
 
@@ -103,9 +103,9 @@ mcp__todoist__find-tasks-by-date — Check workload
 ### 3. Включи в отчёт
 
 ```html
-<b>📋 Process Goals:</b>
-• 2h deep work → ✅ активен
-• 1 outreach/день → ⚠️ просрочен
+<b>Process Goals:</b>
+- 2h deep work -- активен
+- 1 outreach/день -- просрочен
 {N} активных | {M} требуют внимания
 ```
 
@@ -147,14 +147,14 @@ Daily processing complete
 **GOAL:** Keep MEMORY.md current. Don't append — EVOLVE.
 
 ### When to update:
-- ✅ Key decisions with impact (pivot, tool choice, architecture change)
-- ✅ New patterns/insights (learnings)
-- ✅ Changes in Active Context (new ONE Big Thing, Hot Projects)
+- Key decisions with impact (pivot, tool choice, architecture change)
+- New patterns/insights (learnings)
+- Changes in Active Context (new ONE Big Thing, Hot Projects)
 
 ### When NOT to update:
-- ❌ Daily trivia (meetings, calls without impact)
-- ❌ Temporary notes (stay in daily/)
-- ❌ Duplicates of what's already there
+- Daily trivia (meetings, calls without impact)
+- Temporary notes (stay in daily/)
+- Duplicates of what's already there
 
 ### How to update (evolve, not append):
 
@@ -169,9 +169,9 @@ Use Edit tool for precise changes.
 ### In report (if updated):
 
 ```html
-<b>🧠 MEMORY.md updated:</b>
-• Active Context → Hot Projects changed
-• Key Decisions → +1 new decision
+<b>MEMORY.md updated:</b>
+- Active Context -- Hot Projects changed
+- Key Decisions -- +1 new decision
 ```
 
 ## Entry Format
@@ -188,50 +188,50 @@ idea/reflection/learning → thoughts/ (see references/classification.md)
 
 ## Thought Categories
 
-💡 idea → thoughts/ideas/
-🪞 reflection → thoughts/reflections/
-🎯 project → thoughts/projects/
-📚 learning → thoughts/learnings/
+idea → thoughts/ideas/
+reflection → thoughts/reflections/
+project → thoughts/projects/
+learning → thoughts/learnings/
 
 ## HTML Report Template
 
 Output RAW HTML (no markdown, no code blocks):
 
-📊 <b>Обработка за {DATE}</b>
+<b>Обработка за {DATE}</b>
 
-<b>🎯 Текущий фокус:</b>
+<b>Текущий фокус:</b>
 {ONE_BIG_THING}
 
-<b>📓 Сохранено мыслей:</b> {N}
-• {emoji} {title} → {category}/
+<b>Сохранено мыслей:</b> {N}
+- {title} ({category})
 
-<b>✅ Создано задач:</b> {M}
-• {task} <i>({due})</i>
+<b>Создано задач:</b> {M}
+- {task} <i>({due})</i>
 
-<b>📋 Process Goals:</b>
-• {process goal 1} → {status}
-• {process goal 2} → {status}
+<b>Process Goals:</b>
+- {process goal 1} -- {status}
+- {process goal 2} -- {status}
 {N} активных | {M} требуют внимания
 
-<b>📅 Загрузка на неделю:</b>
+<b>Загрузка на неделю:</b>
 Пн: {n} | Вт: {n} | Ср: {n} | Чт: {n} | Пт: {n} | Сб: {n} | Вс: {n}
 
-<b>⚠️ Требует внимания:</b>
-• {overdue or stale goals}
+<b>Требует внимания:</b>
+- {overdue or stale goals}
 
-<b>🔗 Новые связи:</b>
-• [[Note A]] ↔ [[Note B]]
+<b>Новые связи:</b>
+- [[Note A]] -- [[Note B]]
 
-<b>⚡ Топ-3 приоритета:</b>
+<b>Топ-3 приоритета:</b>
 1. {task}
 2. {task}
 3. {task}
 
-<b>📈 Прогресс:</b>
-• {goal}: {%} {emoji}
+<b>Прогресс:</b>
+- {goal}: {%}
 
-<b>🧠 MEMORY.md:</b>
-• {section} → {change description}
+<b>MEMORY.md:</b>
+- {section} -- {change description}
 <i>(if updated)</i>
 
 ---
@@ -241,24 +241,24 @@ Output RAW HTML (no markdown, no code blocks):
 
 If all entries have `<!-- ✓ processed -->` marker, return status report:
 
-📊 <b>Статус за {DATE}</b>
+<b>Статус за {DATE}</b>
 
-<b>🎯 Текущий фокус:</b>
+<b>Текущий фокус:</b>
 {ONE_BIG_THING}
 
-<b>📋 Process Goals:</b>
-• {process goal 1} → {status}
-• {process goal 2} → {status}
+<b>Process Goals:</b>
+- {process goal 1} -- {status}
+- {process goal 2} -- {status}
 {N} активных | {M} требуют внимания
 
-<b>📅 Загрузка на неделю:</b>
+<b>Загрузка на неделю:</b>
 Пн: {n} | Вт: {n} | Ср: {n} | Чт: {n} | Пт: {n} | Сб: {n} | Вс: {n}
 
-<b>⚠️ Требует внимания:</b>
-• {overdue count} просроченных
-• {today count} на сегодня
+<b>Требует внимания:</b>
+- {overdue count} просроченных
+- {today count} на сегодня
 
-<b>⚡ Топ-3 приоритета:</b>
+<b>Топ-3 приоритета:</b>
 1. {task}
 2. {task}
 3. {task}

@@ -157,22 +157,22 @@ def format_report(stats: dict) -> str:
 def format_html(stats: dict) -> str:
     """Format analysis as Telegram HTML."""
     orphan_count = stats["orphan_count"]
-    orphan_emoji = "⚠️" if orphan_count > 10 else "✅"
+    orphan_label = "(!)" if orphan_count > 10 else "(ok)"
 
     lines = [
-        f"📊 <b>Vault Graph Analysis</b>",
+        f"<b>Vault Graph Analysis</b>",
         "",
-        f"<b>📝 Total notes:</b> {stats['total_notes']}",
-        f"<b>🔗 Total links:</b> {stats['total_links']}",
-        f"<b>{orphan_emoji} Orphan notes:</b> {orphan_count}",
+        f"<b>Total notes:</b> {stats['total_notes']}",
+        f"<b>Total links:</b> {stats['total_links']}",
+        f"<b>Orphan notes {orphan_label}:</b> {orphan_count}",
         "",
     ]
 
     # Most connected
     if stats["most_connected"]:
-        lines.append("<b>🏆 Most connected:</b>")
+        lines.append("<b>Most connected:</b>")
         for title, count in stats["most_connected"][:3]:
-            lines.append(f"• [[{title}]] ({count})")
+            lines.append(f"- [[{title}]] ({count})")
         lines.append("")
 
     # Weakest domain
@@ -180,12 +180,12 @@ def format_html(stats: dict) -> str:
         stats["domain_stats"].items(),
         key=lambda x: x[1].get("avg_links", 0)
     )
-    lines.append(f"<b>⚡ Weakest domain:</b> {weakest[0]}/ (avg {weakest[1].get('avg_links', 0):.1f} links)")
+    lines.append(f"<b>Weakest domain:</b> {weakest[0]}/ (avg {weakest[1].get('avg_links', 0):.1f} links)")
 
     # Orphan preview
     if stats["orphans"]:
         lines.append("")
-        lines.append("<b>📋 Sample orphans:</b>")
+        lines.append("<b>Sample orphans:</b>")
         for title in stats["orphans"][:5]:
             lines.append(f"• {title}")
 

@@ -22,7 +22,7 @@ async def cmd_weekly(message: Message) -> None:
     user_id = message.from_user.id if message.from_user else "unknown"
     logger.info("Weekly digest triggered by user %s", user_id)
 
-    status_msg = await message.answer("⏳ Генерирую недельный дайджест...")
+    status_msg = await message.answer("Генерирую недельный дайджест...")
 
     settings = get_settings()
     processor = ClaudeProcessor(settings.vault_path, settings.todoist_api_key)
@@ -40,7 +40,7 @@ async def cmd_weekly(message: Message) -> None:
             if not task.done():
                 try:
                     await status_msg.edit_text(
-                        f"⏳ Генерирую дайджест... ({elapsed // 60}m {elapsed % 60}s)"
+                        f"Генерирую дайджест... ({elapsed // 60}m {elapsed % 60}s)"
                     )
                 except Exception:
                     pass

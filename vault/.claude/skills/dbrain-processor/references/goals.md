@@ -124,8 +124,8 @@ Entry: "Нужно подготовить презентацию для клие
 
 Check:
 - ONE Big Thing: "Ship MVP" → Not related
-- Monthly #1: "Client deliverables" → ✅ Related
-- Yearly: "Client Revenue" → ✅ Related
+- Monthly #1: "Client deliverables" -- Related
+- Yearly: "Client Revenue" -- Related
 
 Result:
 ```

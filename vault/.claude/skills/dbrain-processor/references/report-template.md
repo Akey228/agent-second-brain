@@ -3,6 +3,7 @@
 ## CRITICAL: Output Format
 
 **Return RAW HTML text only. No markdown wrappers.**
+**NO emojis/emoticons in output. Use text labels only.**
 
 WRONG (markdown code block):
 ```html
@@ -30,77 +31,78 @@ NO markdown: **, ##, -, *, backticks
 NO code blocks with triple backticks
 NO tables (Telegram doesn't support)
 NO unsupported tags: div, span, br, p, table, tr, td
+NO emojis or emoticons
 
 ## Template
 
-📊 <b>Обработка за {DATE}</b>
+<b>Обработка за {DATE}</b>
 
-<b>🎯 Текущий фокус:</b>
+<b>Текущий фокус:</b>
 {ONE_BIG_THING from goals/3-weekly.md}
 
-<b>📓 Сохранено мыслей:</b> {N}
-• {emoji} {title} → {category}/
+<b>Сохранено мыслей:</b> {N}
+- {title} ({category})
 
-<b>✅ Создано задач:</b> {M}
-• {task_name} <i>({due})</i>
+<b>Создано задач:</b> {M}
+- {task_name} <i>({due})</i>
 
-<b>📅 Загрузка на неделю:</b>
+<b>Загрузка на неделю:</b>
 Пн: {n} | Вт: {n} | Ср: {n} | Чт: {n} | Пт: {n} | Сб: {n} | Вс: {n}
 
-<b>⚠️ Требует внимания:</b>
-• {count} просроченных задач
-• Цель "{goal}" без активности {days} дней
+<b>Требует внимания:</b>
+- {count} просроченных задач
+- Цель "{goal}" без активности {days} дней
 
-<b>🔗 Новые связи:</b>
-• [[Note A]] ↔ [[Note B]]
+<b>Новые связи:</b>
+- [[Note A]] -- [[Note B]]
 
-<b>⚡ Топ-3 приоритета на завтра:</b>
+<b>Топ-3 приоритета на завтра:</b>
 1. {task} <i>({goal if aligned})</i>
 2. {task}
 3. {task}
 
-<b>📈 Прогресс по целям:</b>
-• {goal_name}: {progress}% {emoji}
+<b>Прогресс по целям:</b>
+- {goal_name}: {progress}%
 
 ---
 <i>Обработано за {duration}</i>
 
 ## Section Rules
 
-### Focus (🎯)
+### Focus
 Read from goals/3-weekly.md, find "ONE Big Thing" section.
 If not found: "Не задан — обновите goals/3-weekly.md"
 
-### Thoughts (📓)
-Count saved, list with category emoji:
-💡 idea, 🪞 reflection, 🎯 project, 📚 learning
+### Thoughts
+Count saved, list with category in parentheses:
+idea, reflection, project, learning
 
-### Tasks (✅)
+### Tasks
 Count created, list with due date.
-Format: • Task name <i>(friday)</i>
+Format: - Task name <i>(friday)</i>
 
-### Week Load (📅)
+### Week Load
 Call find-tasks-by-date for 7 days.
 Format: Пн: 4 | Вт: 2 | ...
 
-### Attention (⚠️)
+### Attention
 Show only if issues exist.
 Check overdue tasks and stale goals (7+ days no activity).
 
-### Links (🔗)
+### Links
 Show only if new links created.
-Format: • [[Note A]] ↔ [[Note B]]
+Format: - [[Note A]] -- [[Note B]]
 
-### Priorities (⚡)
+### Priorities
 Get tomorrow's tasks from Todoist, sort by priority, show top 3.
 
-### Goals Progress (📈)
+### Goals Progress
 Read goals/1-yearly-2026.md, show goals with recent activity.
-Emojis: 🔴 0-25%, 🟡 26-50%, 🟢 51-75%, ✅ 76-100%
+Use text labels: [low] 0-25%, [mid] 26-50%, [good] 51-75%, [done] 76-100%
 
 ## Error Report
 
-❌ <b>Ошибка обработки</b>
+<b>Ошибка обработки</b>
 
 <b>Причина:</b> {error_message}
 <b>Файл:</b> <code>{file_path}</code>
@@ -109,7 +111,7 @@ Emojis: 🔴 0-25%, 🟡 26-50%, 🟢 51-75%, ✅ 76-100%
 
 ## Empty Report
 
-📭 <b>Нет записей для обработки</b>
+<b>Нет записей для обработки</b>
 
 Файл <code>daily/{date}.md</code> пуст.
 
@@ -128,3 +130,4 @@ Before returning report:
 3. No markdown syntax
 4. No tables
 5. Length under 4096 chars
+6. No emojis or emoticons

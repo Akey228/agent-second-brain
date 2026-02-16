@@ -109,30 +109,30 @@ processed: 2024-12-20T21:00:00
 Format: Telegram HTML
 
 ```html
-📥 <b>Inbox Processing Complete</b>
+<b>Inbox Processing Complete</b>
 
-<b>📊 Обработано записей:</b> {N}
+<b>Обработано записей:</b> {N}
 
-<b>⚡ Сделано сразу:</b> {quick_actions}
-• {action 1}
-• {action 2}
+<b>Сделано сразу:</b> {quick_actions}
+- {action 1}
+- {action 2}
 
-<b>📅 Запланировано:</b> {scheduled}
-• {task} <i>({date})</i>
+<b>Запланировано:</b> {scheduled}
+- {task} <i>({date})</i>
 
-<b>🎯 Создано проектов:</b> {projects}
-• {project_name}
+<b>Создано проектов:</b> {projects}
+- {project_name}
 
-<b>📓 Сохранено:</b> {saved}
-• {note} → {category}/
+<b>Сохранено:</b> {saved}
+- {note} ({category})
 
-<b>⏳ Ожидание:</b> {waiting}
-• {item}
+<b>Ожидание:</b> {waiting}
+- {item}
 
-<b>🗑️ Удалено:</b> {deleted}
+<b>Удалено:</b> {deleted}
 
-<b>📭 Inbox теперь:</b> {remaining} items
-{if remaining == 0: ✨ Inbox Zero!}
+<b>Inbox теперь:</b> {remaining} items
+{if remaining == 0: Inbox Zero!}
 ```
 
 ## Quick Actions

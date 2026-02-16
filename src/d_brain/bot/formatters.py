@@ -159,7 +159,7 @@ def format_process_report(report: dict[str, Any]) -> str:
     """
     if "error" in report:
         error_msg = html.escape(str(report["error"]))
-        return f"❌ <b>Ошибка:</b> {error_msg}"
+        return f"[Ошибка] <b>Ошибка:</b> {error_msg}"
 
     if "report" in report:
         raw_report = report["report"]
@@ -175,7 +175,7 @@ def format_process_report(report: dict[str, Any]) -> str:
         # Truncate if too long
         return truncate_html(sanitized, max_length=4096)
 
-    return "✅ <b>Обработка завершена</b>"
+    return "[OK] <b>Обработка завершена</b>"
 
 
 def format_error(error: str) -> str:
@@ -187,7 +187,7 @@ def format_error(error: str) -> str:
     Returns:
         Formatted HTML error message
     """
-    return f"❌ <b>Ошибка:</b> {html.escape(error)}"
+    return f"[Ошибка] <b>Ошибка:</b> {html.escape(error)}"
 
 
 def format_empty_daily() -> str:
@@ -197,6 +197,6 @@ def format_empty_daily() -> str:
         Formatted HTML message
     """
     return (
-        "📭 <b>Нет записей для обработки</b>\n\n"
+        "<b>Нет записей для обработки</b>\n\n"
         "<i>Добавьте голосовые сообщения или текст в течение дня</i>"
     )

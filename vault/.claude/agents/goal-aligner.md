@@ -41,9 +41,9 @@ For each task:
 1. **Check description** for goal references
 2. **Match keywords** against goals
 3. **Classify:**
-   - ✅ Aligned — has goal reference
-   - 🔶 Possibly aligned — keyword match
-   - ❌ Orphan — no connection
+   - [+] Aligned — has goal reference
+   - [~] Possibly aligned — keyword match
+   - [-] Orphan — no connection
 
 ### Step 4: Find Stale Goals
 
@@ -55,42 +55,42 @@ For each yearly goal:
    - Progress updates
 
 2. **Classify:**
-   - ✅ Active — activity in 7 days
-   - 🟡 Quiet — no activity 7-14 days
-   - 🔴 Stale — no activity 14+ days
+   - [+] Active — activity in 7 days
+   - [~] Quiet — no activity 7-14 days
+   - [-] Stale — no activity 14+ days
 
 ### Step 5: Generate Report
 
 Format: Telegram HTML
 
 ```html
-🎯 <b>Alignment Check</b>
+<b>Alignment Check</b>
 
-<b>📋 Задачи без связи с целями:</b>
+<b>Задачи без связи с целями:</b>
 {if orphan tasks:}
-• {task_name} — <i>Предложение: {goal}</i>
+- {task_name} — <i>Предложение: {goal}</i>
 {else:}
-✅ Все задачи связаны с целями
+Все задачи связаны с целями
 
-<b>🎯 Цели без активности:</b>
+<b>Цели без активности:</b>
 {if stale goals:}
-• 🔴 {goal} — {days} дней без активности
-• 🟡 {goal} — {days} дней без активности
+- [-] {goal} — {days} дней без активности
+- [~] {goal} — {days} дней без активности
 {else:}
-✅ Все цели активны
+Все цели активны
 
-<b>📊 Распределение по целям:</b>
-• {goal}: {N} активных задач
-• {goal}: {M} активных задач
-• Без цели: {K} задач
+<b>Распределение по целям:</b>
+- {goal}: {N} активных задач
+- {goal}: {M} активных задач
+- Без цели: {K} задач
 
-<b>💡 Рекомендации:</b>
+<b>Рекомендации:</b>
 {recommendations based on analysis}
 
 <b>Действия:</b>
-• <b>Начать:</b> {goal to focus on}
-• <b>Остановить:</b> {tasks not aligned}
-• <b>Продолжить:</b> {aligned work}
+- <b>Начать:</b> {goal to focus on}
+- <b>Остановить:</b> {tasks not aligned}
+- <b>Продолжить:</b> {aligned work}
 ```
 
 ### Step 6: Suggest Fixes

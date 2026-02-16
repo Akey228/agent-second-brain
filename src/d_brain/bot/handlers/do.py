@@ -31,7 +31,7 @@ async def cmd_do(message: Message, command: CommandObject, state: FSMContext) ->
     # Otherwise, wait for next message
     await state.set_state(DoCommandState.waiting_for_input)
     await message.answer(
-        "🎯 <b>Что сделать?</b>\n\n"
+        "<b>Что сделать?</b>\n\n"
         "Отправь голосовое или текстовое сообщение с запросом."
     )
 
@@ -52,34 +52,34 @@ async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None
         try:
             file = await bot.get_file(message.voice.file_id)
             if not file.file_path:
-                await message.answer("❌ Не удалось скачать голосовое")
+                await message.answer("[Ошибка] Не удалось скачать голосовое")
                 return
 
             file_bytes = await bot.download_file(file.file_path)
             if not file_bytes:
-                await message.answer("❌ Не удалось скачать голосовое")
+                await message.answer("[Ошибка] Не удалось скачать голосовое")
                 return
 
             audio_bytes = file_bytes.read()
             prompt = await transcriber.transcribe(audio_bytes)
         except Exception as e:
             logger.exception("Failed to transcribe voice for /do")
-            await message.answer(f"❌ Не удалось транскрибировать: {e}")
+            await message.answer(f"[Ошибка] Не удалось транскрибировать: {e}")
             return
 
         if not prompt:
-            await message.answer("❌ Не удалось распознать речь")
+            await message.answer("[Ошибка] Не удалось распознать речь")
             return
 
         # Echo transcription to user
-        await message.answer(f"🎤 <i>{prompt}</i>")
+        await message.answer(f"<i>{prompt}</i>")
 
     # Handle text input
     elif message.text:
         prompt = message.text
 
     else:
-        await message.answer("❌ Отправь текст или голосовое сообщение")
+        await message.answer("[Ошибка] Отправь текст или голосовое сообщение")
         return
 
     user_id = message.from_user.id if message.from_user else 0
@@ -88,7 +88,7 @@ async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None
 
 async def process_request(message: Message, prompt: str, user_id: int = 0) -> None:
     """Process the user's request with Claude."""
-    status_msg = await message.answer("⏳ Выполняю...")
+    status_msg = await message.answer("Выполняю...")
 
     settings = get_settings()
     processor = ClaudeProcessor(settings.vault_path, settings.todoist_api_key)
@@ -105,7 +105,7 @@ async def process_request(message: Message, prompt: str, user_id: int = 0) -> No
             if not task.done():
                 try:
                     await status_msg.edit_text(
-                        f"⏳ Выполняю... ({elapsed // 60}m {elapsed % 60}s)"
+                        f"Выполняю... ({elapsed // 60}m {elapsed % 60}s)"
                     )
                 except Exception:
                     pass
