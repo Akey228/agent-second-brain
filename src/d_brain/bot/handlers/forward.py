@@ -8,8 +8,8 @@ from aiogram.types import Message
 
 from d_brain.bot.brain import process_with_brain
 from d_brain.config import get_settings
+from d_brain.services import create_storage
 from d_brain.services.session import SessionStore
-from d_brain.services.storage import VaultStorage
 
 router = Router(name="forward")
 logger = logging.getLogger(__name__)
@@ -22,7 +22,7 @@ async def handle_forward(message: Message) -> None:
         return
 
     settings = get_settings()
-    storage = VaultStorage(settings.vault_path)
+    storage = create_storage(settings)
 
     # Determine source name
     source_name = "Unknown"

@@ -5,9 +5,9 @@ import time
 import sys
 
 # VPS connection
-HOST = "46.21.82.133"
+HOST = "144.31.226.94"
 USER = "root"
-PASSWORD = "0YLG9RgeANjKTc"
+PASSWORD = "M9w2tnchqn0b"
 
 # Tokens
 TELEGRAM_BOT_TOKEN = "8363344885:AAF0I08ErFhwBdJqbNxANoMipl98SohTCTE"
