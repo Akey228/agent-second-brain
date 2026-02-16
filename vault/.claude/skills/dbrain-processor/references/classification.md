@@ -111,14 +111,17 @@ For `[photo]` entries:
 ## File Naming
 
 ```
-thoughts/{category}/{YYYY-MM-DD}-short-title.md
+thoughts/{category}/slug.md
 ```
+
+БЕЗ даты в имени файла. Slug — lowercase, дефисы вместо пробелов.
 
 Examples:
 ```
-thoughts/ideas/2024-12-16-saas-pricing-model.md
-thoughts/projects/2024-12-16-ai-agents-pipeline.md
-thoughts/learnings/2024-12-16-claude-mcp-setup.md
+thoughts/ideas/saas-pricing-model.md
+thoughts/projects/ai-agents-pipeline.md
+thoughts/learnings/claude-mcp-setup.md
+thoughts/reflections/удовольствие-от-результата.md
 ```
 
 ---
@@ -129,25 +132,25 @@ Use preferred format:
 
 ```markdown
 ---
-date: {YYYY-MM-DD}
+Created: YYYY-MM-DD HH:MM
 type: {category}
-domain: {Client Work|AI & Tech|Product|Agency Ops|Content}
-tags: [tag1, tag2]
+tags:
+  - tag1
+  - tag2
+reference: "[[daily/YYYY-MM-DD]]"
+links:
+  - "[[Related Note]]"
 ---
 
-## Context
-[Что привело к мысли]
-
-## Insight
-[Ключевая идея]
-
-## Implication
-<!-- Замените [Your Company] на название вашей компании -->
-[Что это значит для [Your Company]/продукта/стратегии]
-
-## Next Action
-[Конкретный шаг — не абстрактный]
+Текст заметки начинается сразу после frontmatter. БЕЗ заголовка # Title.
 ```
+
+ВАЖНО:
+- `Created` с заглавной C, обязательно с временем
+- `reference` — источник (обычно daily note)
+- `links` — связи с существующими заметками
+- НЕ добавлять `# Заголовок` после frontmatter
+- НЕ создавать новые заметки-ссылки без разрешения пользователя
 
 ---
 

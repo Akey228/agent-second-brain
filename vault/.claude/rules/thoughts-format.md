@@ -18,68 +18,88 @@ thoughts/
 
 ## File Naming
 
-- Format: `YYYY-MM-DD-slug.md`
-- Slug: lowercase, hyphens, descriptive
-- Example: `2024-12-20-voice-agent-architecture.md`
+- Format: `slug.md` (БЕЗ даты в имени файла)
+- Slug: lowercase, через дефис
+- Первая буква slug — строчная (заглавная только в title внутри properties)
+- Пробелы в slug заменяются на дефис
+- Example: `удовольствие-от-результата.md`, `single-tasking-focus.md`
+
+ЗАПРЕЩЕНО:
+- Дата в имени файла (НЕ `2026-02-16-slug.md`)
+- Тире вместо пробелов в title (тире ОК в slug, НО в title — только пробелы)
 
 ## Frontmatter (Required)
 
 ```yaml
 ---
-date: 2024-12-20
+Created: YYYY-MM-DD HH:MM
 type: idea | reflection | project | learning
-tags: [relevant, tags]
-source: daily/2024-12-20.md
-related: []
+tags:
+  - tag1
+  - tag2
+reference: "[[daily/YYYY-MM-DD]]"
+links:
+  - "[[Related Note]]"
 ---
 ```
 
+### Field Rules
+
+| Field | Required | Format | Notes |
+|-------|----------|--------|-------|
+| Created | YES | `YYYY-MM-DD HH:MM` | Заглавная C, обязательно время |
+| type | YES | enum | idea/reflection/project/learning |
+| tags | YES | YAML list | Релевантные теги |
+| reference | YES | wiki-link | Источник: `"[[daily/YYYY-MM-DD]]"` |
+| links | NO | YAML list | Связи с другими заметками |
+
+ВАЖНО:
+- `Created` с заглавной буквы (не `created`, не `date`)
+- Обязательно указывать ВРЕМЯ (не только дату)
+- `reference` — откуда взята мысль (обычно daily note)
+- `tags` — НЕ `type`, поле называется `tags`
+- `links` — НЕ `related`
+
 ## Content Structure
 
+После frontmatter — сразу текст. БЕЗ заголовка.
+
 ```markdown
-# Title
+---
+Created: 2026-02-16 15:00
+type: reflection
+tags:
+  - mindset
+  - growth
+reference: "[[daily/2026-02-16]]"
+links:
+  - "[[Фундаментальный 2026 YEAR]]"
+---
 
-## Summary
-One paragraph summary of the key insight.
+Текст заметки начинается сразу здесь. Без заголовка `# Title`.
+Заголовок уже есть в имени файла и в properties.
 
-## Details
-Full content of the thought.
-
-## Action Items
-- [ ] Any tasks that emerged
-- [ ] Follow-up actions
-
-## Related
-- [[Link to related note]]
-- [[goals/1-yearly-2025#Section]]
+Продолжение текста...
 ```
 
-## Tags Convention
-
-Use hierarchical tags:
-
-```
-#type/idea
-#type/learning
-#topic/ai
-#topic/productivity
-#project/d-brain
-#status/active
-```
+ЗАПРЕЩЕНО после frontmatter:
+- `# Заголовок` — не нужен, название = имя файла
+- Пустые секции (## Summary, ## Details, ## Action Items) — только если есть контент
+- Шаблонные блоки без содержания
 
 ## Wiki-Links
 
 When saving a thought:
 
-1. **Search for related notes** in thoughts/
-2. **Check MOC indexes** for topic clusters
-3. **Link to relevant goals** in goals/
-4. **Add backlinks** to source daily note
+1. **Search for related notes** in thoughts/ and goals/
+2. **Link to relevant existing notes** — НЕ создавать новые заметки без разрешения
+3. **Add backlinks** to source daily note via reference field
 
-Example:
-```markdown
-Extracted from [[daily/2024-12-20]].
-Related to [[Voice Agents]] and [[goals/1-yearly-2025#AI Development]].
+## Tags Convention
+
+Простые теги без иерархии:
+```
+mindset, growth, productivity, focus, habits, health, work, video-editing
 ```
 
 ## Category Guidelines
