@@ -54,6 +54,18 @@ class VaultStorage:
             return ""
         return file_path.read_text(encoding="utf-8")
 
+    BACKLINKS_MARKER = "\n---\n\n## Backlinks\n"
+
+    def _init_daily_file(self, file_path: Path, day: date) -> None:
+        """Initialize a new daily file from template."""
+        template = self.vault_path / "templates" / "daily-template.md"
+        if template.exists():
+            content = template.read_text(encoding="utf-8")
+            content = content.replace("{{date}}", day.isoformat())
+        else:
+            content = f"# {day.isoformat()}\n"
+        file_path.write_text(content, encoding="utf-8")
+
     def append_to_daily(
         self,
         text: str,
@@ -70,11 +82,22 @@ class VaultStorage:
         self._ensure_dirs()
         file_path = self.get_daily_file(timestamp.date())
 
+        if not file_path.exists():
+            self._init_daily_file(file_path, timestamp.date())
+
         time_str = timestamp.strftime("%H:%M")
         entry = f"\n## {time_str} {msg_type}\n{text}\n"
 
-        with file_path.open("a", encoding="utf-8") as f:
-            f.write(entry)
+        content = file_path.read_text(encoding="utf-8")
+
+        # Insert before backlinks section if it exists
+        if self.BACKLINKS_MARKER in content:
+            idx = content.index(self.BACKLINKS_MARKER)
+            content = content[:idx] + entry + content[idx:]
+            file_path.write_text(content, encoding="utf-8")
+        else:
+            with file_path.open("a", encoding="utf-8") as f:
+                f.write(entry)
 
         self._sync_to_s3(file_path)
 
