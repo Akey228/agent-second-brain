@@ -28,27 +28,7 @@
 
 ## Pre-Creation Checklist
 
-### 1. Check Workload (REQUIRED)
-
-```
-find-tasks-by-date:
-  startDate: "today"
-  daysCount: 7
-  limit: 50
-```
-
-Build workload map:
-```
-Mon: 2 tasks
-Tue: 4 tasks  ← overloaded
-Wed: 1 task
-Thu: 3 tasks  ← at limit
-Fri: 2 tasks
-Sat: 0 tasks
-Sun: 0 tasks
-```
-
-### 2. Check Duplicates (REQUIRED)
+### Check Duplicates (REQUIRED)
 
 ```
 find-tasks:
@@ -111,30 +91,7 @@ Bad:
 - "Что-то с клиентом"
 - "Разобраться с AI"
 
-### Workload Balancing
-
-If target day has 3+ tasks:
-1. Find next day with < 3 tasks
-2. Use that day instead
-3. Mention in report: "сдвинуто на {day} (перегрузка)"
-
----
-
-## Project Detection
-
-<!--
-Настройте под свои проекты в Todoist.
-Замените примеры клиентов и название канала.
--->
-
-| Keywords | Project |
-|----------|---------|
-| [Your Client Names], клиент, бренд | Client Work |
-| [Your Company], команда, найм, процессы | Company Ops |
-| продукт, SaaS, MVP | Product |
-| пост, [@your_channel], контент | Content |
-
-If unclear → use Inbox (no projectId).
+All tasks go to Inbox by default (no projectId), unless user explicitly specifies a project.
 
 ---
 
