@@ -22,17 +22,6 @@ class ClaudeProcessor:
         self.todoist_api_key = todoist_api_key
         self._mcp_config_path = (self.vault_path.parent / "mcp-config.json").resolve()
 
-    def _load_skill_content(self) -> str:
-        """Load dbrain-processor skill content for inclusion in prompt.
-
-        NOTE: @vault/ references don't work in --print mode,
-        so we must include skill content directly in the prompt.
-        """
-        skill_path = self.vault_path / ".claude/skills/dbrain-processor/SKILL.md"
-        if skill_path.exists():
-            return skill_path.read_text()
-        return ""
-
     def _todoist_reference_path(self) -> str:
         """Return path to Todoist reference file (loaded on-demand by Claude)."""
         ref_path = self.vault_path / ".claude/skills/dbrain-processor/references/todoist.md"
@@ -123,103 +112,6 @@ week: {year}-W{week:02d}
                 )
                 moc_path.write_text(content)
                 logger.info("Updated MOC-weekly.md with link to %s", summary_path.stem)
-
-    def process_daily(self, day: date | None = None) -> dict[str, Any]:
-        """Generate daily summary — what was done today.
-
-        Args:
-            day: Date to summarize (default: today)
-
-        Returns:
-            Summary report as dict
-        """
-        if day is None:
-            day = date.today()
-
-        daily_file = self.vault_path / "daily" / f"{day.isoformat()}.md"
-
-        if not daily_file.exists():
-            logger.warning("No daily file for %s", day)
-            return {
-                "error": f"No daily file for {day}",
-                "processed_entries": 0,
-            }
-
-        prompt = f"""Сегодня {day}. Сгенерируй краткую сводку дня.
-
-Прочитай файл vault/daily/{day}.md и создай краткий отчёт:
-- Сколько записей было (голос, текст, фото, пересылки)
-- Какие задачи были созданы в Todoist (вызови mcp__todoist__find-tasks-by-date startDate: "{day}" daysCount: 1)
-- Какие мысли были сохранены
-- Общий итог дня
-
-CRITICAL MCP RULE:
-- ТЫ ИМЕЕШЬ ДОСТУП к mcp__todoist__* tools — ВЫЗЫВАЙ НАПРЯМУЮ
-- НИКОГДА не пиши "MCP недоступен"
-
-ФОРМАТ ОТВЕТА:
-- Raw HTML для Telegram (parse_mode=HTML)
-- НЕ используй markdown
-- Начни с <b>Сводка за {day}</b>
-- Допустимые теги: <b>, <i>, <code>, <s>, <u>
-- Будь кратким (лимит 4096 символов)"""
-
-        try:
-            # Pass TODOIST_API_KEY to Claude subprocess
-            env = os.environ.copy()
-            if self.todoist_api_key:
-                env["TODOIST_API_KEY"] = self.todoist_api_key
-
-            result = subprocess.run(
-                [
-                    "claude",
-                    "--print",
-                    "--dangerously-skip-permissions",
-                    "--mcp-config",
-                    str(self._mcp_config_path),
-                    "-p",
-                    prompt,
-                ],
-                cwd=self.vault_path.parent,
-                capture_output=True,
-                text=True,
-                timeout=DEFAULT_TIMEOUT,
-                check=False,
-                env=env,
-            )
-
-            if result.returncode != 0:
-                logger.error("Claude processing failed: %s", result.stderr)
-                return {
-                    "error": result.stderr or "Claude processing failed",
-                    "processed_entries": 0,
-                }
-
-            # Return human-readable output
-            output = result.stdout.strip()
-            return {
-                "report": output,
-                "processed_entries": 1,  # успешно обработано
-            }
-
-        except subprocess.TimeoutExpired:
-            logger.error("Claude processing timed out")
-            return {
-                "error": "Processing timed out",
-                "processed_entries": 0,
-            }
-        except FileNotFoundError:
-            logger.error("Claude CLI not found")
-            return {
-                "error": "Claude CLI not installed",
-                "processed_entries": 0,
-            }
-        except Exception as e:
-            logger.exception("Unexpected error during processing")
-            return {
-                "error": str(e),
-                "processed_entries": 0,
-            }
 
     def execute_prompt(self, user_prompt: str, user_id: int = 0, model_id: str = "") -> dict[str, Any]:
         """Execute arbitrary prompt with Claude.

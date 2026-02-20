@@ -255,13 +255,3 @@ def format_error(error: str) -> str:
     return f"[Ошибка] <b>Ошибка:</b> {html.escape(error)}"
 
 
-def format_empty_daily() -> str:
-    """Format message for empty daily file.
-
-    Returns:
-        Formatted HTML message
-    """
-    return (
-        "<b>Нет записей для обработки</b>\n\n"
-        "<i>Добавьте голосовые сообщения или текст в течение дня</i>"
-    )

@@ -3,11 +3,9 @@
 from d_brain.bot.handlers import (
     buttons,
     commands,
-    do,
     forward,
     model,
     photo,
-    process,
     text,
     voice,
     weekly,
@@ -16,11 +14,9 @@ from d_brain.bot.handlers import (
 __all__ = [
     "buttons",
     "commands",
-    "do",
     "forward",
     "model",
     "photo",
-    "process",
     "text",
     "voice",
     "weekly",
