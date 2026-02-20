@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 
 from aiogram import Router
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from d_brain.bot.brain import process_with_brain
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.message(lambda m: m.text is not None and not m.text.startswith("/"))
-async def handle_text(message: Message) -> None:
+async def handle_text(message: Message, state: FSMContext) -> None:
     """Handle text messages — save and route through Claude brain."""
     if not message.text or not message.from_user:
         return
@@ -40,4 +41,5 @@ async def handle_text(message: Message) -> None:
     logger.info("Text message saved: %d chars", len(message.text))
 
     # Route through brain
-    await process_with_brain(message, message.text, message.from_user.id)
+    data = await state.get_data()
+    await process_with_brain(message, message.text, message.from_user.id, data.get("model_key", ""))

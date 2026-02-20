@@ -6,22 +6,30 @@ import logging
 from aiogram.types import Message
 
 from d_brain.bot.formatters import format_process_report, send_long_message
+from d_brain.bot.states import AVAILABLE_MODELS, DEFAULT_MODEL_KEY
 from d_brain.config import get_settings
 from d_brain.services.processor import ClaudeProcessor
 
 logger = logging.getLogger(__name__)
 
 
-async def process_with_brain(message: Message, user_text: str, user_id: int = 0) -> None:
+async def process_with_brain(
+    message: Message, user_text: str, user_id: int = 0, model_key: str = "",
+) -> None:
     """Send message to Claude brain and return response.
 
     Args:
         message: Telegram message to reply to
         user_text: Text to process (transcription, raw text, caption, etc.)
         user_id: Telegram user ID for session context
+        model_key: Model key from AVAILABLE_MODELS (e.g. "sonnet", "opus")
     """
     settings = get_settings()
     processor = ClaudeProcessor(settings.vault_path, settings.todoist_api_key)
+
+    if not model_key or model_key not in AVAILABLE_MODELS:
+        model_key = DEFAULT_MODEL_KEY
+    model_id = AVAILABLE_MODELS[model_key]["id"]
 
     # Send typing immediately before starting processing
     try:
@@ -30,7 +38,7 @@ async def process_with_brain(message: Message, user_text: str, user_id: int = 0)
         logger.warning("Failed to send initial typing action: %s", e)
 
     task = asyncio.create_task(
-        asyncio.to_thread(processor.execute_prompt, user_text, user_id)
+        asyncio.to_thread(processor.execute_prompt, user_text, user_id, model_id)
     )
 
     # Keep sending "typing..." every 4 seconds while model is thinking

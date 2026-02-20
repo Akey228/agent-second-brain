@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 
 from aiogram import Router
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from d_brain.bot.brain import process_with_brain
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.message(lambda m: m.forward_origin is not None)
-async def handle_forward(message: Message) -> None:
+async def handle_forward(message: Message, state: FSMContext) -> None:
     """Handle forwarded messages — save and route through Claude brain."""
     if not message.from_user:
         return
@@ -59,4 +60,5 @@ async def handle_forward(message: Message) -> None:
 
     # Route through brain
     brain_text = f"[Переслано от {source_name}]: {content}"
-    await process_with_brain(message, brain_text, message.from_user.id)
+    data = await state.get_data()
+    await process_with_brain(message, brain_text, message.from_user.id, data.get("model_key", ""))

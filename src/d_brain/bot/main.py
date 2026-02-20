@@ -8,7 +8,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.types import Update
+from aiogram.types import BotCommand, Update
 
 from d_brain.config import Settings
 
@@ -25,13 +25,14 @@ def create_bot(settings: Settings) -> Bot:
 
 def create_dispatcher() -> Dispatcher:
     """Create and configure the dispatcher with routers."""
-    from d_brain.bot.handlers import commands, do, forward, photo, process, text, voice, weekly
+    from d_brain.bot.handlers import commands, do, forward, model, photo, process, text, voice, weekly
 
     # Use memory storage for FSM (required for /do command state)
     dp = Dispatcher(storage=MemoryStorage())
 
     # Register routers - ORDER MATTERS
     dp.include_router(commands.router)
+    dp.include_router(model.router)  # /model before general handlers
     dp.include_router(process.router)
     dp.include_router(weekly.router)
     dp.include_router(do.router)  # Before voice/text to catch FSM state
@@ -86,6 +87,13 @@ async def run_bot(settings: Settings) -> None:
 
     # Always add auth middleware for security (it handles allow_all_users internally)
     dp.update.middleware(create_auth_middleware(settings))
+
+    # Register bot commands for Telegram menu
+    await bot.set_my_commands([
+        BotCommand(command="do", description="Выполнить запрос через Claude"),
+        BotCommand(command="model", description="Выбрать модель (Sonnet / Opus)"),
+        BotCommand(command="process", description="Обработать записи за день"),
+    ])
 
     logger.info("Starting bot polling...")
     try:

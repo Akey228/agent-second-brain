@@ -33,11 +33,11 @@ class ClaudeProcessor:
             return skill_path.read_text()
         return ""
 
-    def _load_todoist_reference(self) -> str:
-        """Load Todoist reference for inclusion in prompt."""
+    def _todoist_reference_path(self) -> str:
+        """Return path to Todoist reference file (loaded on-demand by Claude)."""
         ref_path = self.vault_path / ".claude/skills/dbrain-processor/references/todoist.md"
         if ref_path.exists():
-            return ref_path.read_text()
+            return str(ref_path)
         return ""
 
     def _get_session_context(self, user_id: int) -> str:
@@ -221,12 +221,13 @@ CRITICAL MCP RULE:
                 "processed_entries": 0,
             }
 
-    def execute_prompt(self, user_prompt: str, user_id: int = 0) -> dict[str, Any]:
+    def execute_prompt(self, user_prompt: str, user_id: int = 0, model_id: str = "") -> dict[str, Any]:
         """Execute arbitrary prompt with Claude.
 
         Args:
             user_prompt: User's natural language request
             user_id: Telegram user ID for session context
+            model_id: Claude model ID (e.g. "claude-sonnet-4-5-20250929")
 
         Returns:
             Execution report as dict
@@ -234,8 +235,17 @@ CRITICAL MCP RULE:
         today = date.today()
 
         # Load context
-        todoist_ref = self._load_todoist_reference()
+        todoist_ref_path = self._todoist_reference_path()
         session_context = self._get_session_context(user_id)
+
+        # Todoist on-demand instruction (don't embed full reference every time)
+        todoist_instruction = ""
+        if todoist_ref_path:
+            todoist_instruction = f"""
+TODOIST (on-demand):
+- Если нужно создать/изменить/найти задачу — СНАЧАЛА прочитай файл: {todoist_ref_path}
+- Следуй правилам из этого файла (проверка дубликатов, формат дат, стиль заголовков)
+- Если задачи не нужны — НЕ читай этот файл"""
 
         prompt = f"""Ты — персональный AI-ассистент. Пользователь отправил сообщение через Telegram.
 
@@ -243,9 +253,7 @@ CRITICAL MCP RULE:
 - Дата: {today}
 - Vault: {self.vault_path}
 
-{session_context}=== TODOIST REFERENCE ===
-{todoist_ref}
-=== END REFERENCE ===
+{session_context}{todoist_instruction}
 
 СООБЩЕНИЕ ПОЛЬЗОВАТЕЛЯ:
 {user_prompt}
@@ -279,16 +287,19 @@ MCP ПРАВИЛА:
             if self.todoist_api_key:
                 env["TODOIST_API_KEY"] = self.todoist_api_key
 
+            cmd = [
+                "claude",
+                "--print",
+                "--dangerously-skip-permissions",
+                "--mcp-config",
+                str(self._mcp_config_path),
+            ]
+            if model_id:
+                cmd.extend(["--model", model_id])
+            cmd.extend(["-p", prompt])
+
             result = subprocess.run(
-                [
-                    "claude",
-                    "--print",
-                    "--dangerously-skip-permissions",
-                    "--mcp-config",
-                    str(self._mcp_config_path),
-                    "-p",
-                    prompt,
-                ],
+                cmd,
                 cwd=self.vault_path.parent,
                 capture_output=True,
                 text=True,

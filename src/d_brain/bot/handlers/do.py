@@ -9,7 +9,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from d_brain.bot.formatters import format_process_report, send_long_message
-from d_brain.bot.states import DoCommandState
+from d_brain.bot.states import AVAILABLE_MODELS, DEFAULT_MODEL_KEY, DoCommandState
 from d_brain.config import get_settings
 from d_brain.services.processor import ClaudeProcessor
 from d_brain.services.transcription import DeepgramTranscriber
@@ -22,13 +22,17 @@ logger = logging.getLogger(__name__)
 async def cmd_do(message: Message, command: CommandObject, state: FSMContext) -> None:
     """Handle /do command."""
     user_id = message.from_user.id if message.from_user else 0
+    data = await state.get_data()
+    model_key = data.get("model_key", DEFAULT_MODEL_KEY)
+    model_id = AVAILABLE_MODELS[model_key]["id"]
 
     # Check for inline text: /do move overdue tasks
     if command.args:
-        await process_request(message, command.args, user_id)
+        await process_request(message, command.args, user_id, model_id)
         return
 
     # Otherwise, wait for next message
+    await state.update_data(do_model_id=model_id)
     await state.set_state(DoCommandState.waiting_for_input)
     await message.answer(
         "<b>Что сделать?</b>\n\n"
@@ -39,7 +43,12 @@ async def cmd_do(message: Message, command: CommandObject, state: FSMContext) ->
 @router.message(DoCommandState.waiting_for_input)
 async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None:
     """Handle voice/text input after /do command."""
+    data = await state.get_data()
+    model_id = data.get("do_model_id", AVAILABLE_MODELS[DEFAULT_MODEL_KEY]["id"])
+    model_key = data.get("model_key", DEFAULT_MODEL_KEY)
     await state.clear()  # Clear state immediately
+    # Restore model selection (state.clear wipes all data)
+    await state.update_data(model_key=model_key)
 
     prompt = None
 
@@ -83,10 +92,10 @@ async def handle_do_input(message: Message, bot: Bot, state: FSMContext) -> None
         return
 
     user_id = message.from_user.id if message.from_user else 0
-    await process_request(message, prompt, user_id)
+    await process_request(message, prompt, user_id, model_id)
 
 
-async def process_request(message: Message, prompt: str, user_id: int = 0) -> None:
+async def process_request(message: Message, prompt: str, user_id: int = 0, model_id: str = "") -> None:
     """Process the user's request with Claude."""
     status_msg = await message.answer("Выполняю...")
 
@@ -95,7 +104,7 @@ async def process_request(message: Message, prompt: str, user_id: int = 0) -> No
 
     async def run_with_progress() -> dict:
         task = asyncio.create_task(
-            asyncio.to_thread(processor.execute_prompt, prompt, user_id)
+            asyncio.to_thread(processor.execute_prompt, prompt, user_id, model_id)
         )
 
         elapsed = 0

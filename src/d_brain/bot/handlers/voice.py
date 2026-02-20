@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 
 from aiogram import Bot, Router
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from d_brain.bot.brain import process_with_brain
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.message(lambda m: m.voice is not None)
-async def handle_voice(message: Message, bot: Bot) -> None:
+async def handle_voice(message: Message, bot: Bot, state: FSMContext) -> None:
     """Handle voice messages — transcribe, save, route through Claude brain."""
     if not message.voice or not message.from_user:
         return
@@ -65,7 +66,8 @@ async def handle_voice(message: Message, bot: Bot) -> None:
 
         # Echo transcription and route through brain
         await send_long_message(message, f"<i>{transcript}</i>")
-        await process_with_brain(message, transcript, message.from_user.id)
+        data = await state.get_data()
+        await process_with_brain(message, transcript, message.from_user.id, data.get("model_key", ""))
 
     except Exception as e:
         logger.exception("Error processing voice message")
