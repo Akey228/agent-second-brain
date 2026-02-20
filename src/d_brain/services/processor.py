@@ -21,6 +21,32 @@ class ClaudeProcessor:
         self.vault_path = Path(vault_path)
         self.todoist_api_key = todoist_api_key
         self._mcp_config_path = (self.vault_path.parent / "mcp-config.json").resolve()
+        self._sync_script = (self.vault_path.parent / "scripts" / "vault-sync.sh").resolve()
+
+    def _vault_sync(self, action: str) -> None:
+        """Run vault-sync.sh pull or push.
+
+        Args:
+            action: "pull" or "push"
+        """
+        if not self._sync_script.exists():
+            logger.warning("vault-sync.sh not found at %s", self._sync_script)
+            return
+        try:
+            result = subprocess.run(
+                ["bash", str(self._sync_script), action],
+                cwd=self.vault_path.parent,
+                capture_output=True,
+                text=True,
+                timeout=120,
+                check=False,
+            )
+            if result.returncode != 0:
+                logger.error("vault-sync.sh %s failed: %s", action, result.stderr)
+            else:
+                logger.info("vault-sync.sh %s completed", action)
+        except Exception:
+            logger.exception("vault-sync.sh %s error", action)
 
     def _todoist_reference_path(self) -> str:
         """Return path to Todoist reference file (loaded on-demand by Claude)."""
@@ -154,7 +180,7 @@ TODOIST (on-demand):
 1. Пойми намерение пользователя
 2. ДЕЙСТВУЙ:
    - ЗАДАЧА (создай, напомни, запланируй, не забудь) → создай в Todoist через mcp__todoist__add-tasks
-   - ЗАМЕТКА/МЫСЛЬ (идея, понял, осознал, интересно) → сохрани в vault/thoughts/ через Write tool
+   - ЗАМЕТКА/МЫСЛЬ (идея, понял, осознал, интересно) → сохрани в vault/ (корень) через Write tool
    - ВОПРОС → ответь на него
    - ПРОСТО РАЗГОВОР → ответь естественно
 3. Ответь кратко
@@ -175,6 +201,9 @@ MCP ПРАВИЛА:
 - Если просто отвечаешь — отвечай без лишних заголовков"""
 
         try:
+            # S3 pull BEFORE processing — ensure vault matches S3
+            self._vault_sync("pull")
+
             env = os.environ.copy()
             if self.todoist_api_key:
                 env["TODOIST_API_KEY"] = self.todoist_api_key
@@ -199,6 +228,9 @@ MCP ПРАВИЛА:
                 check=False,
                 env=env,
             )
+
+            # S3 push AFTER processing — sync new/changed files to S3
+            self._vault_sync("push")
 
             if result.returncode != 0:
                 logger.error("Claude execution failed: %s", result.stderr)
@@ -241,7 +273,7 @@ CRITICAL MCP RULE:
 - Если tool вернул ошибку — покажи ТОЧНУЮ ошибку в отчёте
 
 WORKFLOW:
-1. Собери данные за неделю (daily файлы в vault/daily/, completed tasks через MCP)
+1. Собери данные за неделю (session logs в vault/.sessions/, completed tasks через MCP)
 2. Проанализируй прогресс по целям (goals/3-weekly.md)
 3. Определи победы и вызовы
 4. Сгенерируй HTML отчёт

@@ -18,9 +18,7 @@ Keeps the vault organized and connected.
 ### Step 1: Scan Vault
 
 ```
-Glob thoughts/**/*.md
-Glob daily/**/*.md
-Glob goals/**/*.md
+Glob vault/**/*.md
 ```
 
 Build index of all notes with:
@@ -38,10 +36,9 @@ A note is orphan if:
 - Has no related notes in frontmatter
 
 ```
-For each note in thoughts/:
+For each note in vault/:
   Check if any other note links to it
-  Check if listed in MOC/
-  If neither → mark as orphan
+  If no links → mark as orphan
 ```
 
 ### Step 3: Suggest Connections
@@ -85,7 +82,7 @@ MOC structure:
 - [[chatterbox-tts]]
 
 ### Productivity
-- [[daily-routine-optimization]]
+- [[Оптимизация распорядка дня]]
 ```
 
 ### Step 6: Generate Report
@@ -97,8 +94,6 @@ Format: Telegram HTML
 
 <b>Статистика:</b>
 - Всего заметок: {N}
-- В thoughts/: {M}
-- В daily/: {K}
 
 <b>Связность:</b>
 - Связанных: {connected}%
@@ -145,10 +140,10 @@ Score = (Notes with 2+ links / Total Notes) × 100
 
 | MOC | Covers |
 |-----|--------|
-| MOC-ideas.md | thoughts/ideas/ |
-| MOC-learnings.md | thoughts/learnings/ |
-| MOC-projects.md | thoughts/projects/ |
-| MOC-reflections.md | thoughts/reflections/ |
+| MOC-ideas.md | vault/ (notes tagged idea) |
+| MOC-learnings.md | vault/ (notes tagged learning) |
+| MOC-projects.md | vault/ (notes tagged project) |
+| MOC-reflections.md | vault/ (notes tagged reflection) |
 
 ## Link Discovery Strategies
 

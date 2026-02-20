@@ -48,7 +48,7 @@ If task aligns with goals, consider priority bump:
 
 ## Saving Thoughts
 
-When saving to thoughts/:
+When saving note to vault/:
 
 1. **Check goal relevance:**
    - Scan goals/1-yearly-2025.md for matching areas

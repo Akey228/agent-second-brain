@@ -75,12 +75,11 @@ mcp__todoist__find-tasks-by-date — Check workload
 1. Load context — Read goals/3-weekly.md (ONE Big Thing), goals/2-monthly.md
 2. Check workload — find-tasks-by-date for 7 days
 3. **Check process goals** — find-tasks with labels: ["process-goal"]
-4. Read daily — daily/YYYY-MM-DD.md
+4. Read session log — today's entries from .sessions/
 5. Process entries — Classify → task or thought
 6. Build links — Connect notes with [[wiki-links]]
-7. **Log actions to daily** — append action log entry
-8. **Evolve MEMORY.md** — update long-term memory if needed
-9. Generate HTML report — RAW HTML for Telegram
+7. **Evolve MEMORY.md** — update long-term memory if needed
+8. Generate HTML report — RAW HTML for Telegram
 
 ## Process Goals Check (Step 3)
 
@@ -111,38 +110,7 @@ mcp__todoist__find-tasks-by-date — Check workload
 
 See: references/process-goals.md for patterns and examples.
 
-## Logging to daily/ (Step 7)
-
-**После ЛЮБЫХ изменений в vault — СРАЗУ пиши в `daily/YYYY-MM-DD.md`:**
-
-Format:
-```
-## HH:MM [text]
-{Description of actions}
-
-**Created/Updated:**
-- [[path/to/file|Name]] — description
-```
-
-What to log:
-- Files created in thoughts/
-- Tasks created in Todoist (with task ID)
-- Links built between notes
-
-Example:
-```
-## 14:30 [text]
-Daily processing complete
-
-**Created tasks:** 3
-- "Follow-up client" (id: 8501234567, tomorrow)
-- "Prepare proposal" (id: 8501234568, friday)
-
-**Saved thoughts:** 1
-- [[thoughts/ideas/product-launch|Product Launch]] — new idea
-```
-
-## Evolve MEMORY.md (Step 8)
+## Evolve MEMORY.md (Step 7)
 
 **GOAL:** Keep MEMORY.md current. Don't append — EVOLVE.
 
@@ -153,7 +121,6 @@ Daily processing complete
 
 ### When NOT to update:
 - Daily trivia (meetings, calls without impact)
-- Temporary notes (stay in daily/)
 - Duplicates of what's already there
 
 ### How to update (evolve, not append):
@@ -184,14 +151,7 @@ Types: [voice], [text], [forward from: Name], [photo]
 ## Classification
 
 task → Todoist (see references/todoist.md)
-idea/reflection/learning → thoughts/ (see references/classification.md)
-
-## Thought Categories
-
-idea → thoughts/ideas/
-reflection → thoughts/reflections/
-project → thoughts/projects/
-learning → thoughts/learnings/
+idea/reflection/learning → vault/ root as note (see references/classification.md)
 
 ## HTML Report Template
 

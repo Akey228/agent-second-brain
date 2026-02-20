@@ -1,45 +1,45 @@
 ---
-paths: "thoughts/**/*.md"
+paths: "vault/*.md"
 ---
 
-# Thoughts Format
+# Note Format
 
-Rules for notes in `thoughts/` folder and its subfolders.
+Rules for all notes in vault/ root.
 
-## Folder Structure
+## Location
+
+ALL notes go to `vault/` root. NO subfolders like thoughts/, ideas/, etc.
 
 ```
-thoughts/
-├── ideas/       # Creative ideas, concepts
-├── reflections/ # Personal reflections, lessons
-├── projects/    # Project-related notes
-└── learnings/   # Knowledge, discoveries
+vault/Название заметки на русском.md
 ```
 
 ## File Naming
 
-- Format: `slug.md` (БЕЗ даты в имени файла)
-- Slug: lowercase, через дефис
-- Первая буква slug — строчная (заглавная только в title внутри properties)
-- Пробелы в slug заменяются на дефис
-- Example: `удовольствие-от-результата.md`, `single-tasking-focus.md`
+- Filename: RUSSIAN title with SPACES (NOT hyphens, NOT English, NOT slug)
+- NO date in filename
+- NO slug format, NO lowercase-hyphens
 
-ЗАПРЕЩЕНО:
-- Дата в имени файла (НЕ `2026-02-16-slug.md`)
-- Тире вместо пробелов в title (тире ОК в slug, НО в title — только пробелы)
+Examples:
+```
+vault/Модель ценообразования SaaS.md
+vault/Акустический поролон для записи звука.md
+vault/Здоровый образ жизни решает большинство проблем.md
+```
 
-## Frontmatter (Required)
+FORBIDDEN:
+- `thoughts/ideas/slug.md` — old format, DO NOT use
+- `2026-02-16-slug.md` — no dates in filenames
+- `single-tasking-focus.md` — no English slugs
+
+## Frontmatter (MANDATORY)
 
 ```yaml
 ---
-Created: YYYY-MM-DD HH:MM
-type: idea | reflection | project | learning
-tags:
-  - tag1
-  - tag2
-reference: "[[daily/YYYY-MM-DD]]"
-links:
-  - "[[Related Note]]"
+Created: "YYYY-MM-DDTHH:MM"
+References:
+Tags:
+Links:
 ---
 ```
 
@@ -47,83 +47,46 @@ links:
 
 | Field | Required | Format | Notes |
 |-------|----------|--------|-------|
-| Created | YES | `YYYY-MM-DD HH:MM` | Заглавная C, обязательно время |
-| type | YES | enum | idea/reflection/project/learning |
-| tags | YES | YAML list | Релевантные теги |
-| reference | YES | wiki-link | Источник: `"[[daily/YYYY-MM-DD]]"` |
-| links | NO | YAML list | Связи с другими заметками |
-
-ВАЖНО:
-- `Created` с заглавной буквы (не `created`, не `date`)
-- Обязательно указывать ВРЕМЯ (не только дату)
-- `reference` — откуда взята мысль (обычно daily note)
-- `tags` — НЕ `type`, поле называется `tags`
-- `links` — НЕ `related`
+| Created | YES | `"YYYY-MM-DDTHH:MM"` | In quotes, T-separator |
+| References | NO | text | Source reference |
+| Tags | NO | text | Relevant tags |
+| Links | NO | text | Related notes |
 
 ## Content Structure
 
-После frontmatter — сразу текст. БЕЗ заголовка.
+After frontmatter — text immediately. NO heading.
 
 ```markdown
 ---
-Created: 2026-02-16 15:00
-type: reflection
-tags:
-  - mindset
-  - growth
-reference: "[[daily/2026-02-16]]"
-links:
-  - "[[Фундаментальный 2026 YEAR]]"
+Created: "2026-02-20T15:00"
+References:
+Tags:
+Links:
 ---
+Текст заметки начинается сразу здесь. Без заголовка.
 
-Текст заметки начинается сразу здесь. Без заголовка `# Title`.
-Заголовок уже есть в имени файла и в properties.
-
-Продолжение текста...
+#### Linked References to "Название заметки"
+```dataview
+list from [[Название заметки]]
+```
 ```
 
-ЗАПРЕЩЕНО после frontmatter:
-- `# Заголовок` — не нужен, название = имя файла
-- Пустые секции (## Summary, ## Details, ## Action Items) — только если есть контент
-- Шаблонные блоки без содержания
+CRITICAL:
+- Text goes BETWEEN frontmatter and Linked References block
+- `#### Linked References to "Title"` is ALWAYS at the END
+- `list from [[...]]` MUST be inside ```dataview code block
+- NO `# Title` after frontmatter
+
+## Note Content Rules
+
+- Text from voice messages goes into notes almost AS-IS with MINIMAL editing
+- Allowed edits: remove word repetitions, replace some words with better fits
+- FORBIDDEN: adding headers, bullet points, lists, conclusions, structure, summaries, analysis
 
 ## Wiki-Links
 
-When saving a thought:
+When saving a note:
 
-1. **Search for related notes** in thoughts/ and goals/
-2. **Link to relevant existing notes** — НЕ создавать новые заметки без разрешения
-3. **Add backlinks** to source daily note via reference field
-
-## Tags Convention
-
-Простые теги без иерархии:
-```
-mindset, growth, productivity, focus, habits, health, work, video-editing
-```
-
-## Category Guidelines
-
-### ideas/
-- Novel concepts, inventions
-- Business ideas
-- Creative solutions
-- "What if..." thoughts
-
-### reflections/
-- Personal insights
-- Lessons learned
-- Emotional processing
-- Gratitude, wins
-
-### projects/
-- Project-specific notes
-- Meeting notes
-- Status updates
-- Decisions made
-
-### learnings/
-- New knowledge
-- Book/article insights
-- Technical discoveries
-- "TIL" moments
+1. **Search for related notes** in vault/
+2. **Link to relevant existing notes** — do NOT create new notes without permission
+3. **Add backlinks** via Links field if applicable

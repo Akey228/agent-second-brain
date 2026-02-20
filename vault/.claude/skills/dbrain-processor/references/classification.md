@@ -29,14 +29,14 @@ Based on user's work context (see [ABOUT.md](ABOUT.md)):
 
 **Keywords:** GPT, Claude, модель, агент, API, пайплайн, автоматизация, интеграция
 
-**→ Category:** learning или project → thoughts/
+**→ Category:** learning или project → vault/ (root)
 
 ### Product
 Идеи, гипотезы, MVP, юнит-экономика
 
 **Keywords:** продукт, SaaS, MVP, гипотеза, монетизация, юнит-экономика, стартап
 
-**→ Category:** idea или project → thoughts/
+**→ Category:** idea или project → vault/ (root)
 
 ### Company Ops
 Команда, процессы, автоматизация, найм, управление, финансы
@@ -52,7 +52,7 @@ Based on user's work context (see [ABOUT.md](ABOUT.md)):
 <!-- Замените [@your_channel] на ваш Telegram-канал или удалите если не нужно -->
 **Keywords:** пост, [@your_channel], LinkedIn, контент, тезис, статья
 
-**→ Category:** idea → thoughts/ideas/ или task если с дедлайном
+**→ Category:** idea → vault/ (root)ideas/ или task если с дедлайном
 
 ---
 
@@ -92,7 +92,7 @@ For `[photo]` entries:
    - Screenshot клиентского материала → Client Work
    - Схема/диаграмма → AI & Tech или Product
    - Текст/статья → Learning
-3. Add description to daily file
+3. Create note if valuable
 
 ---
 
@@ -101,27 +101,27 @@ For `[photo]` entries:
 | Category | Destination |
 |----------|-------------|
 | task | Todoist |
-| idea | thoughts/ideas/ |
-| reflection | thoughts/reflections/ |
-| project | thoughts/projects/ |
-| learning | thoughts/learnings/ |
+| idea | vault/ (root) |
+| reflection | vault/ (root) |
+| project | vault/ (root) |
+| learning | vault/ (root) |
 
 ---
 
 ## File Naming
 
 ```
-thoughts/{category}/slug.md
+vault/Название заметки на русском.md
 ```
 
-БЕЗ даты в имени файла. Slug — lowercase, дефисы вместо пробелов.
+ВСЕ заметки создаются в корне vault/. БЕЗ даты в имени файла. Название — на РУССКОМ языке, с ПРОБЕЛАМИ (не дефисы, не slug).
 
 Examples:
 ```
-thoughts/ideas/saas-pricing-model.md
-thoughts/projects/ai-agents-pipeline.md
-thoughts/learnings/claude-mcp-setup.md
-thoughts/reflections/удовольствие-от-результата.md
+vault/Модель ценообразования SaaS.md
+vault/Акустический поролон для записи звука.md
+vault/Здоровый образ жизни решает большинство проблем.md
+vault/Удовольствие от результата.md
 ```
 
 ---
@@ -132,23 +132,27 @@ Use preferred format:
 
 ```markdown
 ---
-Created: YYYY-MM-DD HH:MM
-type: {category}
-tags:
-  - tag1
-  - tag2
-reference: "[[daily/YYYY-MM-DD]]"
-links:
-  - "[[Related Note]]"
+Created: "YYYY-MM-DDTHH:MM"
+References:
+Tags:
+Links:
 ---
+Текст заметки размещается ЗДЕСЬ — между frontmatter и блоком Linked References.
 
-Текст заметки начинается сразу после frontmatter. БЕЗ заголовка # Title.
+#### Linked References to "Note Title"
+```dataview
+list from [[Note Title]]
+```
 ```
 
 ВАЖНО:
-- `Created` с заглавной C, обязательно с временем
-- `reference` — источник (обычно daily note)
-- `links` — связи с существующими заметками
+- `Created` в ISO формате с T-разделителем, в кавычках
+- `References` — источники
+- `Tags` — теги
+- `Links` — связи с существующими заметками
+- Текст/содержимое заметки идёт СРАЗУ после frontmatter, ПЕРЕД блоком Linked References
+- Блок `#### Linked References to "Title"` обязателен и стоит В КОНЦЕ заметки
+- `list from [[...]]` ОБЯЗАТЕЛЬНО внутри ```dataview code block
 - НЕ добавлять `# Заголовок` после frontmatter
 - НЕ создавать новые заметки-ссылки без разрешения пользователя
 

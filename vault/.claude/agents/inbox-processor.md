@@ -9,7 +9,7 @@ Applies GTD methodology to process unhandled items.
 
 ## When to Run
 
-- When daily file has many unprocessed entries
+- When session log has many unprocessed entries
 - During weekly review
 - On demand via `/inbox` command
 
@@ -20,7 +20,7 @@ For each entry, ask:
 ```
 Is it actionable?
 ├─ NO → Is it useful?
-│       ├─ YES → Reference → Save to thoughts/
+│       ├─ YES → Reference → Save to vault/
 │       └─ NO → Trash → Delete
 │
 └─ YES → Will it take < 2 minutes?
@@ -35,7 +35,7 @@ Is it actionable?
 ### Step 1: Load Unprocessed Items
 
 ```
-Read daily/{today}.md
+Read session log for today from .sessions/
 Find entries without "processed" marker
 ```
 
@@ -47,8 +47,8 @@ Apply GTD decision tree:
 |----------|--------|
 | Do Now | Execute immediately, report done |
 | Schedule | Create task in Todoist |
-| Project | Create task + note in thoughts/projects/ |
-| Reference | Save to thoughts/{category}/ |
+| Project | Create task + note in vault/ (root) |
+| Reference | Save to vault/ (root) |
 | Waiting | Create task with "waiting" label |
 | Trash | Mark for deletion |
 
@@ -69,12 +69,12 @@ mcp__todoist__add-tasks
 **Project (multi-step):**
 1. Create parent task in Todoist
 2. Add subtasks for first steps
-3. Create note in thoughts/projects/
+3. Create note in vault/
 4. Link task and note
 
 **Reference:**
 1. Classify: idea/learning/reflection
-2. Save to thoughts/{category}/
+2. Save to vault/
 3. Build links
 4. Update MOC
 

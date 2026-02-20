@@ -8,11 +8,11 @@ Build connections between notes to create a knowledge graph.
 
 ### Step 1: Search for Related Notes
 
-Search thoughts/ for related content:
+Search vault/ for related content:
 
 ```
-Grep "keyword1" in thoughts/**/*.md
-Grep "keyword2" in thoughts/**/*.md
+Grep "keyword1" in vault/**/*.md
+Grep "keyword2" in vault/**/*.md
 ```
 
 Keywords to search:
@@ -47,11 +47,10 @@ Find matching goal areas
 
 In the thought file, add:
 
-**In frontmatter:**
+**In frontmatter Links field:**
 ```yaml
-related:
-  - "[[thoughts/ideas/2024-12-15-voice-agents.md]]"
-  - "[[goals/1-yearly-2025#AI Development]]"
+Links:
+  - "[[Голосовые агенты]]"
 ```
 
 **In content (inline):**
@@ -69,19 +68,7 @@ This connects to [[Voice Agents Architecture]] we explored earlier.
 
 ### Step 5: Update MOC Index
 
-Add new note to appropriate MOC:
-
-```markdown
-# MOC: Ideas
-
-## Recent
-- [[thoughts/ideas/2024-12-20-new-idea.md]] — Brief description
-
-## By Topic
-### AI & Voice
-- [[thoughts/ideas/2024-12-20-new-idea.md]]
-- [[thoughts/ideas/2024-12-15-voice-agents.md]]
-```
+Add new note link to relevant existing notes if applicable.
 
 ### Step 6: Add Backlinks
 
@@ -119,8 +106,8 @@ Track new links created:
 New thought: "Новый инструмент X можно использовать для проекта Y"
 
 1. **Search:**
-   - Grep "keyword" in thoughts/ → finds related notes
-   - Grep "tool" in thoughts/ → no results
+   - Grep "keyword" in vault/ → finds related notes
+   - Grep "tool" in vault/ → no results
 
 2. **Check MOC:**
    - MOC-learnings.md has relevant section
@@ -129,17 +116,7 @@ New thought: "Новый инструмент X можно использова�
    - 1-yearly-2025.md has matching goal
 
 4. **Create links:**
-   ```yaml
-   related:
-     - "[[thoughts/ideas/related-note.md]]"
-     - "[[goals/1-yearly-2025#Your Goal]]"
-   ```
-
-5. **Update MOC-learnings.md:**
-   ```markdown
-   ### Your Category
-   - [[thoughts/learnings/2024-12-20-new-learning.md]] — Description
-   ```
+   Add to Links field in frontmatter of new note
 
 6. **Report:**
    ```
@@ -156,6 +133,6 @@ A note is "orphan" if:
 
 Flag orphans for review:
 ```
-<b>⚠️ Изолированные заметки:</b>
-• [[thoughts/ideas/orphan-note.md]]
+Изолированные заметки:
+- [[Название заметки]]
 ```
