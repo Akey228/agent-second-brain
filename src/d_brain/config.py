@@ -36,19 +36,9 @@ class Settings(BaseSettings):
     )
 
     @property
-    def daily_path(self) -> Path:
-        """Path to daily notes directory."""
-        return self.vault_path / "daily"
-
-    @property
     def attachments_path(self) -> Path:
         """Path to attachments directory."""
         return self.vault_path / "attachments"
-
-    @property
-    def thoughts_path(self) -> Path:
-        """Path to thoughts directory."""
-        return self.vault_path / "thoughts"
 
     @property
     def inbox_path(self) -> Path:

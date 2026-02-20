@@ -60,8 +60,6 @@ async def handle_photo(message: Message, bot: Bot, state: FSMContext) -> None:
         if message.caption:
             content += f"\n\n{message.caption}"
 
-        storage.append_to_daily(content, timestamp, "[photo]")
-
         # Log to session
         session = SessionStore(settings.vault_path)
         session.append(

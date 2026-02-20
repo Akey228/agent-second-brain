@@ -44,18 +44,17 @@ Weakest domain: learnings/ (avg 1.2 links/note)
 
 Domains are configured in `references/domains.md`. Default structure:
 
-- **daily/** — Daily journal entries
-- **thoughts/** — Processed ideas, reflections, learnings
-- **goals/** — Goal cascade files
-- **MOC/** — Maps of Content (index pages)
-- **projects/** — Project notes
+- **1. Inbox/** — Incoming notes
+- **5. Projects/** — Active projects
+- **6. Areas/** — Life areas
+- **7. Resources/** — Reference material
+- **8. Archives/** — Archived content
 
 ## Link Building Strategy
 
 1. **Entity extraction** — Find mentions of existing notes
 2. **Category mapping** — Connect notes to relevant MOCs
-3. **Temporal links** — Link daily entries to related thoughts
-4. **Cross-domain** — Bridge domains (project ↔ goal ↔ daily)
+3. **Cross-domain** — Bridge domains (project ↔ area ↔ resource)
 
 ## Scripts
 

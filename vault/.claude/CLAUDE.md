@@ -7,9 +7,7 @@ Voice-first personal assistant for capturing thoughts and managing tasks via Tel
 **Before doing anything else, read these files in order:**
 
 1. `vault/MEMORY.md` — curated long-term memory (preferences, decisions, context)
-2. `vault/daily/YYYY-MM-DD.md` — today's entries
-3. `vault/daily/YYYY-MM-DD.md` — yesterday's entries (for continuity)
-4. `vault/goals/3-weekly.md` — this week's ONE Big Thing
+2. Today's session log from `vault/.sessions/` — current entries
 
 **Don't ask permission, just do it.** This ensures context continuity across sessions.
 
@@ -17,17 +15,7 @@ Voice-first personal assistant for capturing thoughts and managing tasks via Tel
 
 ## SESSION END PROTOCOL
 
-**Before ending a significant session, write to today's daily:**
-
-```markdown
-## HH:MM [text]
-Session summary: [what was discussed/decided/created]
-- Key decision: [if any]
-- Created: [[link]] [if any files created]
-- Next action: [if any]
-```
-
-**Also update `vault/MEMORY.md` if:**
+**Update `vault/MEMORY.md` if:**
 - New key decision was made
 - User preference discovered
 - Important fact learned
@@ -43,11 +31,12 @@ Help user stay aligned with goals, capture valuable insights, and maintain clari
 
 | Folder | Purpose |
 |--------|---------|
-| `daily/` | Raw daily entries (YYYY-MM-DD.md) |
-| `goals/` | Goal cascade (3y → yearly → monthly → weekly) |
-| `thoughts/` | Processed notes by category |
-| `MOC/` | Maps of Content indexes |
-| `attachments/` | Photos by date |
+| `0. System/` | Files (attachments), Templates, Home Dashboard |
+| `1. Inbox/` | Incoming notes, fleeting/literature/permanent, MOCs |
+| `5. Projects/` | Active projects |
+| `6. Areas/` | Life areas (goals, health, etc.) |
+| `7. Resources/` | Reference material (editing, finance, etc.) |
+| `8. Archives/` | Archived content |
 
 ## Current Focus
 
@@ -63,26 +52,9 @@ goals/2-monthly.md      → Current month's top 3 priorities
 goals/3-weekly.md       → This week's focus + ONE Big Thing
 ```
 
-## Entry Format
-
-```markdown
-## HH:MM [type]
-Content
-```
-
-Types: `[voice]`, `[text]`, `[forward from: Name]`, `[photo]`
-
 ## Processing Workflow
 
-Run daily processing via `/process` command or automatically at 21:00.
-
-### Process Flow:
-1. Read goals/ → understand priorities
-2. Check Todoist → know workload
-3. Read daily/ → classify entries
-4. Create tasks → aligned with goals
-5. Save thoughts → build [[links]]
-6. Generate HTML report → send to Telegram
+Messages are processed in real-time via Claude brain. Session logs are stored in `.sessions/`.
 
 ## Available Skills
 
@@ -104,7 +76,6 @@ Run daily processing via `/process` command or automatically at 21:00.
 ## Path-Specific Rules
 
 See `.claude/rules/` for format requirements:
-- `daily-format.md` — daily files format
 - `thoughts-format.md` — thought notes format
 - `goals-format.md` — goals format
 - `telegram-report.md` — HTML report format
@@ -185,7 +156,6 @@ When invoked via /do, Claude receives arbitrary user requests. Common patterns:
 
 **Filesystem:**
 - Read/write vault files
-- Access daily/, goals/, thoughts/
 
 ## Customization
 

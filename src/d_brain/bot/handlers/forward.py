@@ -9,7 +9,6 @@ from aiogram.types import Message
 
 from d_brain.bot.brain import process_with_brain
 from d_brain.config import get_settings
-from d_brain.services import create_storage
 from d_brain.services.session import SessionStore
 
 router = Router(name="forward")
@@ -23,7 +22,6 @@ async def handle_forward(message: Message, state: FSMContext) -> None:
         return
 
     settings = get_settings()
-    storage = create_storage(settings)
 
     # Determine source name
     source_name = "Unknown"
@@ -44,7 +42,6 @@ async def handle_forward(message: Message, state: FSMContext) -> None:
     msg_type = f"[forward from: {source_name}]"
 
     timestamp = datetime.fromtimestamp(message.date.timestamp())
-    storage.append_to_daily(content, timestamp, msg_type)
 
     # Log to session
     session = SessionStore(settings.vault_path)

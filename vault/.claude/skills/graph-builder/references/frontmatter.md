@@ -23,8 +23,8 @@ created: YYYY-MM-DD
 modified: YYYY-MM-DD
 tags: [tag1, tag2]
 aliases: [alternate-name]
-type: idea | reflection | learning | project | moc | daily
-domain: thoughts | goals | projects | daily
+type: idea | reflection | learning | project | moc
+domain: inbox | projects | areas | resources | archives
 status: draft | active | archived
 links:
   - "[[Related Note]]"
@@ -53,7 +53,6 @@ links:
 - `learning` — Knowledge from external source
 - `project` — Project documentation
 - `moc` — Map of Content index
-- `daily` — Daily journal entry
 
 ## Status Values
 

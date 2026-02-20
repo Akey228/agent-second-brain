@@ -10,7 +10,6 @@ from aiogram.types import Message
 from d_brain.bot.brain import process_with_brain
 from d_brain.bot.formatters import send_long_message
 from d_brain.config import get_settings
-from d_brain.services import create_storage
 from d_brain.services.session import SessionStore
 from d_brain.services.transcription import DeepgramTranscriber
 
@@ -27,7 +26,6 @@ async def handle_voice(message: Message, bot: Bot, state: FSMContext) -> None:
     await message.chat.do(action="typing")
 
     settings = get_settings()
-    storage = create_storage(settings)
     transcriber = DeepgramTranscriber(settings.deepgram_api_key)
 
     try:
@@ -48,9 +46,7 @@ async def handle_voice(message: Message, bot: Bot, state: FSMContext) -> None:
             await message.answer("Could not transcribe audio")
             return
 
-        # Save to daily file
         timestamp = datetime.fromtimestamp(message.date.timestamp())
-        storage.append_to_daily(transcript, timestamp, "[voice]")
 
         # Log to session
         session = SessionStore(settings.vault_path)

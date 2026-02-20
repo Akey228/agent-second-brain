@@ -41,7 +41,7 @@ CRITICAL: MCP loads in 10-30 seconds. You are NOT in subprocess — MCP IS runni
 
 Algorithm:
 1. Call mcp__todoist__find-tasks-by-date
-2. Error? Wait 10 sec, read goals/, daily/ files
+2. Error? Wait 10 sec, read goals/ files
 3. Call again
 4. Error again? Wait 20 more sec
 5. Third call — GUARANTEED to work

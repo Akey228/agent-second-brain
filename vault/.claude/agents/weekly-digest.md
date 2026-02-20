@@ -16,10 +16,7 @@ Analyzes the past week and generates comprehensive digest report.
 
 ### Step 1: Collect Week Data
 
-1. **Read all daily files for the week:**
-   ```
-   daily/YYYY-MM-DD.md (7 files)
-   ```
+1. **Read session logs for the week** from `vault/.sessions/`
 
 2. **Get completed tasks from Todoist:**
    ```
