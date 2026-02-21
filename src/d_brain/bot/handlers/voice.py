@@ -8,7 +8,6 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from d_brain.bot.brain import process_with_brain
-from d_brain.bot.formatters import send_long_message
 from d_brain.config import get_settings
 from d_brain.services.session import SessionStore
 from d_brain.services.transcription import DeepgramTranscriber
@@ -60,8 +59,6 @@ async def handle_voice(message: Message, bot: Bot, state: FSMContext) -> None:
 
         logger.info("Voice message saved: %d chars", len(transcript))
 
-        # Echo transcription and route through brain
-        await send_long_message(message, f"<i>{transcript}</i>")
         data = await state.get_data()
         await process_with_brain(message, transcript, message.from_user.id, data.get("model_key", ""))
 
