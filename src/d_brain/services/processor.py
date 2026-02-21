@@ -55,11 +55,13 @@ class ClaudeProcessor:
             return str(ref_path)
         return ""
 
-    def _get_session_context(self, user_id: int) -> str:
+    def _get_session_context(self, user_id: int, full_text: bool = False) -> str:
         """Get today's session context for Claude.
 
         Args:
             user_id: Telegram user ID
+            full_text: If True, include full text (for journal entries).
+                       If False, truncate to 80 chars (for regular messages).
 
         Returns:
             Recent session entries formatted for inclusion in prompt.
@@ -76,7 +78,9 @@ class ClaudeProcessor:
         for entry in today_entries[-10:]:
             ts = entry.get("ts", "")[11:16]  # HH:MM from ISO
             entry_type = entry.get("type", "unknown")
-            text = entry.get("text", "")[:80]
+            text = entry.get("text", "")
+            if not full_text:
+                text = text[:80]
             if text:
                 lines.append(f"{ts} [{entry_type}] {text}")
         lines.append("=== END SESSION ===\n")
@@ -154,7 +158,10 @@ week: {year}-W{week:02d}
 
         # Load context
         todoist_ref_path = self._todoist_reference_path()
-        session_context = self._get_session_context(user_id)
+        # Detect journal request — provide full session text for journal entries
+        journal_keywords = ["дневн", "дневник", "в дневник"]
+        is_journal = any(kw in user_prompt.lower() for kw in journal_keywords)
+        session_context = self._get_session_context(user_id, full_text=is_journal)
 
         # Todoist on-demand instruction (don't embed full reference every time)
         todoist_instruction = ""
@@ -179,11 +186,40 @@ TODOIST (on-demand):
 АЛГОРИТМ:
 1. Пойми намерение пользователя
 2. ДЕЙСТВУЙ:
+   - ДНЕВНИК (добавь дневные заметки, добавь в дневник, запиши в дневник) → см. ДНЕВНИК ниже
    - ЗАДАЧА (создай, напомни, запланируй, не забудь) → создай в Todoist через mcp__todoist__add-tasks
    - ЗАМЕТКА/МЫСЛЬ (идея, понял, осознал, интересно) → сохрани в vault/ (корень) через Write tool
    - ВОПРОС → ответь на него
    - ПРОСТО РАЗГОВОР → ответь естественно
 3. Ответь кратко
+
+ДНЕВНИК (ежедневные записи):
+Когда пользователь говорит "добавь дневные заметки", "добавь в дневник", "запиши в дневник" или подобное:
+
+1. Файл дневника: vault/{today}.md (например vault/2026-02-21.md)
+2. Если файл НЕ существует — создай с frontmatter:
+   ---
+   Created: "{today}T00:00"
+   References:
+   Tags: дневник
+   Links:
+   ---
+3. Если файл УЖЕ существует — ДОЧИТАЙ его и ДОБАВЬ новую запись в конец (перед Linked References)
+4. Формат записи: заголовок ## HH:MM и ниже текст
+5. HH:MM — время из session log (когда пришло голосовое/текст)
+6. Текст — минимально причёсанный: убрать повторы слов, тавтологию, заменить неудачные слова. НЕ переписывать, НЕ добавлять структуру/списки/выводы
+7. В конце файла ВСЕГДА блок Linked References:
+   #### Linked References to "{today}"
+   ```dataview
+   list from [[{today}]]
+   ```
+8. НЕ добавляй в дневник сообщения типа "привет", "как дела", вопросы, команды — ТОЛЬКО содержательные записи
+9. Какие именно записи добавить — определи из контекста сессии (TODAY'S SESSION). Добавляй ВСЕ содержательные записи за день, кроме команд/вопросов/приветствий
+
+ВАЖНО про дневник:
+- Одна заметка на день, накапливается в течение дня
+- Каждая новая запись — отдельный ## HH:MM блок
+- Обычные сообщения (вопросы, задачи, заметки) обрабатываются как раньше и НЕ попадают в дневник
 
 MCP ПРАВИЛА:
 - ТЫ ИМЕЕШЬ ДОСТУП к mcp__todoist__* tools — ВЫЗЫВАЙ НАПРЯМУЮ
@@ -197,6 +233,7 @@ MCP ПРАВИЛА:
 - Отвечай кратко и по делу (лимит 4096 символов)
 - Если создал задачу — подтверди: [OK] Задача создана: название (дата)
 - Если сохранил мысль — подтверди: [OK] Сохранено: название
+- Если добавил в дневник — подтверди: [OK] Дневник обновлён: {today}.md (N записей добавлено)
 - НЕ используй эмодзи/смайлики в ответах — только текст
 - Если просто отвечаешь — отвечай без лишних заголовков"""
 

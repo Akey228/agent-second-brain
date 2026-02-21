@@ -56,6 +56,20 @@ goals/3-weekly.md       → This week's focus + ONE Big Thing
 
 Messages are processed in real-time via Claude brain. Session logs are stored in `.sessions/`.
 
+## Daily Journal (Дневник)
+
+Trigger: user says "добавь дневные заметки", "добавь в дневник", "запиши в дневник" or similar.
+
+### Rules:
+1. **One file per day:** `vault/YYYY-MM-DD.md` (e.g. `vault/2026-02-21.md`)
+2. **Accumulates:** entries are ADDED, never overwritten
+3. **Entry format:** `## HH:MM` header + cleaned text below
+4. **Text cleanup:** minimal — remove word repetitions, tautology. Do NOT restructure, add lists, headers, conclusions
+5. **What goes in:** only substantive voice/text entries from session log. NOT commands, questions, greetings
+6. **Frontmatter:** standard with `Tags: дневник`
+7. **Linked References:** always at the end of file
+8. **S3 sync:** pull before, push after (handled automatically by processor)
+
 ## Available Skills
 
 | Skill | Purpose |
