@@ -8,6 +8,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 
 class SessionStore:
@@ -32,8 +33,10 @@ class SessionStore:
             entry_type: Type of entry (voice, text, photo, forward, command, etc.)
             **data: Additional data to store (text, duration, msg_id, etc.)
         """
+        # Use Asia/Krasnoyarsk timezone (UTC+7) for Nikita's local time
+        krasnoyarsk_tz = ZoneInfo("Asia/Krasnoyarsk")
         entry = {
-            "ts": datetime.now().astimezone().isoformat(),
+            "ts": datetime.now(krasnoyarsk_tz).isoformat(),
             "type": entry_type,
             **data,
         }
@@ -75,7 +78,9 @@ class SessionStore:
         Returns:
             List of today's entries
         """
-        today = datetime.now().date().isoformat()
+        # Use Asia/Krasnoyarsk timezone for consistent "today" comparison
+        krasnoyarsk_tz = ZoneInfo("Asia/Krasnoyarsk")
+        today = datetime.now(krasnoyarsk_tz).date().isoformat()
         return [
             e
             for e in self.get_recent(user_id, limit=200)
