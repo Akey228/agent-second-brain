@@ -70,6 +70,20 @@ Trigger: user says "добавь дневные заметки", "добавь �
 7. **Linked References:** always at the end of file
 8. **S3 sync:** pull before, push after (handled automatically by processor)
 
+## Work Notes (Рабочие заметки)
+
+Trigger: user says "рабочие заметки", "добавь в рабочие заметки", "рабочую заметку" or similar.
+
+### Rules:
+1. **One file per day:** `vault/WorkDaily/Work YYYY-MM-DD.md` (e.g. `vault/WorkDaily/Work 2026-02-23.md`)
+2. **Accumulates:** entries are ADDED, never overwritten
+3. **Entry format:** `## HH:MM` header + cleaned text below
+4. **Text cleanup:** minimal — remove word repetitions, tautology. Do NOT restructure, add lists, headers, conclusions
+5. **What goes in:** only substantive work-related entries from session log. NOT commands, questions, greetings
+6. **Frontmatter:** standard with `Tags: рабочий дневник`
+7. **Linked References:** always at the end of file
+8. **S3 sync:** pull before, push after (handled automatically by processor)
+
 ## Available Skills
 
 | Skill | Purpose |
