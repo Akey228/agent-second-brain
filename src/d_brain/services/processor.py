@@ -158,10 +158,12 @@ week: {year}-W{week:02d}
 
         # Load context
         todoist_ref_path = self._todoist_reference_path()
-        # Detect journal request — provide full session text for journal entries
+        # Detect journal/work-notes request — provide full session text
         journal_keywords = ["дневн", "дневник", "в дневник"]
+        work_notes_keywords = ["рабочие заметки", "рабочую заметку", "в рабочие заметки", "рабочий дневник"]
         is_journal = any(kw in user_prompt.lower() for kw in journal_keywords)
-        session_context = self._get_session_context(user_id, full_text=is_journal)
+        is_work_notes = any(kw in user_prompt.lower() for kw in work_notes_keywords)
+        session_context = self._get_session_context(user_id, full_text=(is_journal or is_work_notes))
 
         # Todoist on-demand instruction (don't embed full reference every time)
         todoist_instruction = ""
@@ -187,6 +189,7 @@ TODOIST (on-demand):
 1. Пойми намерение пользователя
 2. ДЕЙСТВУЙ:
    - ДНЕВНИК (добавь дневные заметки, добавь в дневник, запиши в дневник) → см. ДНЕВНИК ниже
+   - РАБОЧИЕ ЗАМЕТКИ (рабочие заметки, добавь в рабочие заметки, рабочую заметку) → см. РАБОЧИЕ ЗАМЕТКИ ниже
    - ЗАДАЧА (создай, напомни, запланируй, не забудь) → создай в Todoist через mcp__todoist__add-tasks
    - ЗАМЕТКА/МЫСЛЬ (идея, понял, осознал, интересно) → сохрани в vault/ (корень) через Write tool
    - ВОПРОС → ответь на него
@@ -220,6 +223,34 @@ TODOIST (on-demand):
 - Одна заметка на день, накапливается в течение дня
 - Каждая новая запись — отдельный ## HH:MM блок
 - Обычные сообщения (вопросы, задачи, заметки) обрабатываются как раньше и НЕ попадают в дневник
+
+РАБОЧИЕ ЗАМЕТКИ (рабочий дневник):
+Когда пользователь говорит "рабочие заметки", "добавь в рабочие заметки", "рабочую заметку" или подобное:
+
+1. Файл: vault/WorkDaily/Work {today}.md (например vault/WorkDaily/Work 2026-02-23.md)
+2. Если файл НЕ существует — создай с frontmatter:
+   ---
+   Created: "{today}T00:00"
+   References:
+   Tags: рабочий дневник
+   Links:
+   ---
+3. Если файл УЖЕ существует — ДОЧИТАЙ его и ДОБАВЬ новую запись в конец (перед Linked References)
+4. Формат записи: заголовок ## HH:MM и ниже текст
+5. HH:MM — время из session log (когда пришло голосовое/текст)
+6. Текст — минимально причёсанный: убрать повторы слов, тавтологию. НЕ переписывать, НЕ добавлять структуру/списки/выводы
+7. В конце файла ВСЕГДА блок Linked References:
+   #### Linked References to "Work {today}"
+   ```dataview
+   list from [[Work {today}]]
+   ```
+8. НЕ добавляй команды/вопросы/приветствия — ТОЛЬКО рабочие записи
+9. Какие записи добавить — определи из контекста сессии (TODAY'S SESSION)
+
+ВАЖНО про рабочие заметки:
+- Одна заметка на день в папке WorkDaily/
+- Каждая новая запись — отдельный ## HH:MM блок
+- Если добавил — подтверди: [OK] Рабочие заметки обновлены: Work {today}.md (N записей добавлено)
 
 MCP ПРАВИЛА:
 - ТЫ ИМЕЕШЬ ДОСТУП к mcp__todoist__* tools — ВЫЗЫВАЙ НАПРЯМУЮ
