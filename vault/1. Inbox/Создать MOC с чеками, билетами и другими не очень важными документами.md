@@ -4,7 +4,7 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources/MOC - Obsidian]]"
 ---
 В нем я буду хранить все не очень важные документами: чеки от покупок, 
 #### Linked References to "Создать MOC с чеками, билетами и другими не очень важными документами"

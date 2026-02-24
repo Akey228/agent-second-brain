@@ -4,12 +4,12 @@ banner_y: 0.528
 notetoolbar: none
 dg-publish:
 ---
-- **[[Q1 2026]]**
+- **[[1. Inbox/6. Areas 1/Goals/Q1 2026]]**
 - **[[Q2 2026]]**
 - **[[Q3 2026]]**
 - **[[Q4 2026]]**
-- **[[Фундаментальный 2026 YEAR]]**
-- **[[LIFE]]**
+- **[[1. Inbox/6. Areas 1/Goals/Фундаментальный 2026 YEAR]]**
+- **[[1. Inbox/6. Areas 1/Goals/2025/LIFE]]**
 - - - 
 # 0️⃣Action
 
@@ -23,8 +23,8 @@ dg-publish:
 > [!multi-column]
 >
 > > [!note]+ Social media
-> > - [[MOC - YouTube]]
-> > - [[MOC - Telegram]]
+> > - [[1. Inbox/7. Resources 1/MOC - YouTube]]
+> > - [[1. Inbox/7. Resources 1/MOC - Telegram]]
 >
 > > [!info]+ Products
 > > - [[MOC - Курсик про клиентов]]
@@ -35,49 +35,49 @@ dg-publish:
 > [!multi-column]
 >
 > > [!info]+ Lifestyle
-> > - [[MOC - Personal]]
-> > - [[MOC - Productivity]]
-> > - [[MOC - Habits]]
-> > - [[MOC - Future & Dreams]]
-> > - [[MOC - Travel]]
-> > - [[MOC - Learning]]
-> > - [[MOC - Thinking]]
-> > - [[MOC - Psychology]]
+> > - [[1. Inbox/6. Areas 1/MOC - Personal]]
+> > - [[1. Inbox/6. Areas 1/MOC - Productivity]]
+> > - [[1. Inbox/6. Areas 1/MOC - Habits]]
+> > - [[1. Inbox/6. Areas 1/MOC - Future & Dreams]]
+> > - [[1. Inbox/6. Areas 1/MOC - Travel]]
+> > - [[1. Inbox/6. Areas 1/MOC - Learning]]
+> > - [[1. Inbox/6. Areas 1/MOC - Thinking]]
+> > - [[1. Inbox/6. Areas 1/MOC - Psychology]]
 >
 >>[!info]+ Health
->> - [[MOC - Nutrition]]
->> - [[MOC - Training]]
->> - [[MOC - Sleep]]
->> - [[MOC - Anatomia]]
+>> - [[1. Inbox/6. Areas 1/Health/MOC - Nutrition]]
+>> - [[1. Inbox/6. Areas 1/Health/MOC - Training]]
+>> - [[1. Inbox/6. Areas 1/Health/MOC - Sleep]]
+>> - [[1. Inbox/7. Resources 1/MOC - Anatomia]]
 >
 > > [!info]+ Vault
-> > - [[MOC - Film Library]]
-> > - [[MOC - Book Library]]
-> > - [[MOC - Passwords]]
+> > - [[1. Inbox/6. Areas 1/MOC - Film Library]]
+> > - [[1. Inbox/6. Areas 1/MOC - Book Library]]
+> > - [[1. Inbox/6. Areas 1/MOC - Passwords]]
 ---
 # 3️⃣ Resources
 > [!multi-column]
 > 
 >> [!info]+ Hard Editing
-> > - [[MOC - After Effects]]
-> > - [[MOC - Premiere Pro]]
-> > - [[MOC - Sound Design]]
-> > - [[MOC - VFX]]
-> > - [[MOC - Editing Fundamentals]]
-> > - [[MOC - Narrative Flow]]
+> > - [[1. Inbox/7. Resources 1/Editing/MOC - After Effects]]
+> > - [[1. Inbox/7. Resources 1/Editing/MOC - Premiere Pro]]
+> > - [[1. Inbox/7. Resources 1/Editing/MOC - Sound Design]]
+> > - [[1. Inbox/7. Resources 1/Editing/MOC - VFX]]
+> > - [[1. Inbox/7. Resources 1/Editing/MOC - Editing Fundamentals]]
+> > - [[1. Inbox/7. Resources 1/Editing/MOC - Narrative Flow]]
 > 
 > > [!info]+ Soft Editing
-> > - [[MOC - Portfolio]]
-> > - [[MOC - Clients]]
-> > - [[MOC - Personal Brand]]
+> > - [[1. Inbox/7. Resources 1/MOC - Portfolio]]
+> > - [[1. Inbox/7. Resources 1/MOC - Clients]]
+> > - [[1. Inbox/7. Resources 1/MOC - Personal Brand]]
 >
 > > [!info]+ Other
-> > - [[MOC - Съёмка]]
-> > - [[MOC - Obsidian]]
-> > - [[MOC - n8n Assistant]]
-> > - [[MOC - Marketing]]
-> > - [[MOC - Neural Networks]]
-> > - [[MOC - Thumbnails]]
+> > - [[1. Inbox/7. Resources 1/MOC - Съёмка]]
+> > - [[1. Inbox/7. Resources 1/MOC - Obsidian]]
+> > - [[1. Inbox/7. Resources 1/MOC - n8n Assistant]]
+> > - [[1. Inbox/7. Resources 1/MOC - Marketing]]
+> > - [[1. Inbox/7. Resources 1/MOC - Neural Networks]]
+> > - [[1. Inbox/7. Resources 1/MOC - Thumbnails]]
 >
 
 ---

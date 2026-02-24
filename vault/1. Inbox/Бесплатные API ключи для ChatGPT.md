@@ -5,9 +5,9 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - n8n Assistant]]"
-  - "[[MOC - Obsidian]]"
-  - "[[MOC - Neural Networks]]"
+  - "[[1. Inbox/7. Resources/MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources/MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources/MOC - Neural Networks]]"
 ---
 В этом видосике автор рассказал как можно беслптано получить ключи для чата гпт
 
@@ -19,7 +19,7 @@ Links:
 
 Вроде как можно обойти эти ограничения, но пока что не знаю как
 
-Думаю для [[MOC - Obsidian]] он подойдёт, но для [[MOC - n8n Assistant]], даже для самых мелких задач, - не подойдёт
+Думаю для [[1. Inbox/7. Resources/MOC - Obsidian]] он подойдёт, но для [[1. Inbox/7. Resources/MOC - n8n Assistant]], даже для самых мелких задач, - не подойдёт
 #### Linked References to "Бесплатные ChatGPT API ключи"
 ```dataview
 list from [[Бесплатные ChatGPT API ключи]]

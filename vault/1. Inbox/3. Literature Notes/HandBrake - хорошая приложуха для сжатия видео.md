@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Editing Fundamentals]]"
+  - "[[1. Inbox/7. Resources 1/Editing/MOC - Editing Fundamentals]]"
 ---
 
 #### Linked References to "HandBrake - хорошая приложуха для сжатия видео"

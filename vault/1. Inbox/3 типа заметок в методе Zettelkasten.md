@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources/MOC - Obsidian]]"
   - "[[Метод Zettelkasten]]"
 ---
 # Fleeting Notes

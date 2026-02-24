@@ -4,7 +4,7 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources/MOC - n8n Assistant]]"
 ---
 
 #### Linked References to "Требования к ответам главного бота N8N"

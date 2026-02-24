@@ -6,9 +6,9 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - n8n Assistant]]"
-  - "[[MOC - Obsidian]]"
-  - "[[MOC - Productivity]]"
+  - "[[1. Inbox/7. Resources/MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources/MOC - Obsidian]]"
+  - "[[1. Inbox/6. Areas/MOC - Productivity]]"
 ---
 В этом видосике дали идею о переноси всех свои дел, планирования в obsidian
 

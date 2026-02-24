@@ -5,8 +5,8 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Obsidian]]"
-  - "[[MOC - Neural Networks]]"
+  - "[[1. Inbox/7. Resources 1/MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources 1/MOC - Neural Networks]]"
 ---
 В этом видосике мужичёк рассказал как добавить ChatGPT в обсидиан
 ### Применение:

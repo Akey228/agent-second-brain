@@ -4,7 +4,7 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - After Effects]]"
+  - "[[1. Inbox/7. Resources/Editing/MOC - After Effects]]"
 ---
 
 #### Linked References to "Создание универсального плагина для After Effects на базе нейросетей"

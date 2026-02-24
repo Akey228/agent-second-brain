@@ -4,7 +4,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Psychology]]"
+  - "[[1. Inbox/6. Areas/MOC - Psychology]]"
 ---
 
 #### Linked References to "Экзистенциальный кризис и влияние времени vs действий"

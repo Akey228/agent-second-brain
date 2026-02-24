@@ -4,8 +4,8 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - VFX]]"
-  - "[[MOC - After Effects]]"
+  - "[[1. Inbox/7. Resources 1/Editing/MOC - VFX]]"
+  - "[[1. Inbox/7. Resources 1/Editing/MOC - After Effects]]"
 ---
 
 #### Linked References to "Гайд на ротоскопинг в ae нПриват"

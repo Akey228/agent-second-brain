@@ -5,7 +5,7 @@ Tags:
   - action
   - idea
 Links:
-  - "[[MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources/MOC - Obsidian]]"
 ---
 Так будет легче писать, находить темы
 Надо ещё обдумать эту идею

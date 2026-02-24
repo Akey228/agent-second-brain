@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources 1/MOC - Obsidian]]"
   - "[[Красивые цвета для папок и графа связанных с темой]]"
 ---
 

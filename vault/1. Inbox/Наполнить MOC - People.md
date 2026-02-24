@@ -4,7 +4,7 @@ References:
 Tags:
   - action
 Links:
-  - "[[MOC - People]]"
+  - "[[1. Inbox/6. Areas/MOC - People]]"
 ---
 
 #### Linked References to "Наполнить мок пипл"

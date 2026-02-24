@@ -1,5 +1,5 @@
 
-[[MOC - YouTube]]
+[[1. Inbox/7. Resources 1/MOC - YouTube]]
 [[Текстовый контент]]
 [[Короткие видео]]
 

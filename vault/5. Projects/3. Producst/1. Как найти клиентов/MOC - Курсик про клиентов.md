@@ -1,4 +1,4 @@
-[[MOC - Clients]]
+[[1. Inbox/7. Resources 1/MOC - Clients]]
 # Ideas
 ```dataview
 list

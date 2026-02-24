@@ -1,6 +1,6 @@
 ---
 Links:
-  - "[[MOC - YouTube]]"
+  - "[[1. Inbox/7. Resources/MOC - YouTube]]"
 ---
 
 # Actions

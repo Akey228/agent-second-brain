@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Съёмка]]"
+  - "[[1. Inbox/7. Resources/MOC - Съёмка]]"
 ---
 
 #### Linked References to "Настройка камеры в Blackmagic Cam"

@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Game]]"
+  - "[[1. Inbox/6. Areas 1/MOC - Game]]"
 ---
 Вы спавнитесь в бункере, на поверхности есть куча мародеров, боссов, мутантов
 #### Linked References to "Minecraft - Сборка постапокалиптических модов"

@@ -3,8 +3,8 @@ Created: 2026-01-15T09:36
 References:
 Tags:
 Links:
-  - "[[MOC - Telegram]]"
-  - "[[MOC - YouTube]]"
+  - "[[1. Inbox/7. Resources/MOC - Telegram]]"
+  - "[[1. Inbox/7. Resources/MOC - YouTube]]"
 ---
 AKEY Privat НАПОЛНЕНИЕ:
 

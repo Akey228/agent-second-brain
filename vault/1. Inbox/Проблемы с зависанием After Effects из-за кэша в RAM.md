@@ -4,7 +4,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - After Effects]]"
+  - "[[1. Inbox/7. Resources/Editing/MOC - After Effects]]"
 ---
 
 #### Linked References to "Проблемы с зависанием After Effects из-за кэша в RAM"

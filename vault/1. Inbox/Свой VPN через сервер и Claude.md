@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Neural Networks]]"
+  - "[[1. Inbox/7. Resources/MOC - Neural Networks]]"
   - "[[MOC - Patrick - digital assistant]]"
 ---
 

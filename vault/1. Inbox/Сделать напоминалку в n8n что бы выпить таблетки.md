@@ -4,7 +4,7 @@ References:
 Tags:
   - action
 Links:
-  - "[[MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources/MOC - n8n Assistant]]"
 ---
 
 #### Linked References to "Сделать напоминалку в n8n что бы выпить таблетки"

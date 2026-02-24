@@ -4,8 +4,8 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - Telegram]]"
-  - "[[MOC - Premiere Pro]]"
+  - "[[1. Inbox/7. Resources 1/MOC - Telegram]]"
+  - "[[1. Inbox/7. Resources 1/Editing/MOC - Premiere Pro]]"
 ---
 
 

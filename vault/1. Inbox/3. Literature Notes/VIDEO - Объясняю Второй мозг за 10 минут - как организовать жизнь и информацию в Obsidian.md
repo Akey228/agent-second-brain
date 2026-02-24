@@ -4,7 +4,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources 1/MOC - Obsidian]]"
   - "[[Метод Zettelkasten]]"
   - "[[Второй мозг]]"
 ---

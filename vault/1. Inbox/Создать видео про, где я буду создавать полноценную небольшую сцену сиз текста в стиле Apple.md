@@ -6,7 +6,7 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - YouTube]]"
+  - "[[1. Inbox/7. Resources/MOC - YouTube]]"
 ---
 
 #### Linked References to "Создать видео про, где я буду создавать полноценную небольшую сцену сиз текста в стиле Apple"

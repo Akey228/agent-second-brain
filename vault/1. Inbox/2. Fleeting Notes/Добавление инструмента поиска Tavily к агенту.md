@@ -4,7 +4,7 @@ References:
 Tags:
   - action
 Links:
-  - "[[MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources 1/MOC - n8n Assistant]]"
 ---
 
 #### Linked References to "Добавление инструмента поиска Tavily к агенту"

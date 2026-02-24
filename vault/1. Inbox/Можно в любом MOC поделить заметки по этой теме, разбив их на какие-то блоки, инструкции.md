@@ -5,7 +5,7 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - Obsidian]]"
+  - "[[1. Inbox/7. Resources/MOC - Obsidian]]"
 ---
 
 > [!NOTE] Title

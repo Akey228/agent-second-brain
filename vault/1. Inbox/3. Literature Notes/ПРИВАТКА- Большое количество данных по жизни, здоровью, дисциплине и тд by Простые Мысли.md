@@ -5,13 +5,13 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Habits]]"
-  - "[[MOC - Productivity]]"
-  - "[[MOC - Thinking]]"
-  - "[[MOC - Psychology]]"
-  - "[[MOC - Training]]"
-  - "[[MOC - Sleep]]"
-  - "[[MOC - Nutrition]]"
+  - "[[1. Inbox/6. Areas 1/MOC - Habits]]"
+  - "[[1. Inbox/6. Areas 1/MOC - Productivity]]"
+  - "[[1. Inbox/6. Areas 1/MOC - Thinking]]"
+  - "[[1. Inbox/6. Areas 1/MOC - Psychology]]"
+  - "[[1. Inbox/6. Areas 1/Health/MOC - Training]]"
+  - "[[1. Inbox/6. Areas 1/Health/MOC - Sleep]]"
+  - "[[1. Inbox/6. Areas 1/Health/MOC - Nutrition]]"
 ---
 
 #### Linked References to "ПРИВАТКА- Большое количество данных по жизни, здоровью, дисциплине и тд by Простые Мысли"

@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources/MOC - n8n Assistant]]"
 ---
 
 #### Linked References to "Большое количество полезных готовых шаблонов для n8n"

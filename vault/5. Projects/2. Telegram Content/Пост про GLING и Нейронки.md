@@ -3,9 +3,9 @@ Created: 2026-01-04T10:59
 References:
 Tags:
 Links:
-  - "[[MOC - Neural Networks]]"
-  - "[[MOC - Telegram]]"
-  - "[[MOC - Editing Fundamentals]]"
+  - "[[1. Inbox/7. Resources 1/MOC - Neural Networks]]"
+  - "[[1. Inbox/7. Resources 1/MOC - Telegram]]"
+  - "[[1. Inbox/7. Resources 1/Editing/MOC - Editing Fundamentals]]"
 ---
 
 #### Linked References to "Пост про GLING и Нейронки"

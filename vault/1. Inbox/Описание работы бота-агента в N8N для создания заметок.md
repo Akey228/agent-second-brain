@@ -4,7 +4,7 @@ References:
 Tags:
   - action
 Links:
-  - "[[MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources/MOC - n8n Assistant]]"
 ---
 
 #### Linked References to "Описание работы бота-агента в N8N для создания заметок"

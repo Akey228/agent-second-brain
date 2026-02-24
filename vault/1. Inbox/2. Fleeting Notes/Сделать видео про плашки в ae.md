@@ -5,7 +5,7 @@ References:
 Tags:
   - idea
 Links:
-  - "[[MOC - YouTube]]"
+  - "[[1. Inbox/7. Resources 1/MOC - YouTube]]"
 ---
 В видосике показать как делать такую вылетающую плашку
 #### Linked References to "Сделать видео про плашки в ae"

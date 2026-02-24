@@ -5,7 +5,7 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Editing Fundamentals]]"
+  - "[[1. Inbox/7. Resources/Editing/MOC - Editing Fundamentals]]"
   - "[[MOC - 5. Все анимации в стиле Apple в одном видео]]"
 ---
 Можно использовать для интрухи

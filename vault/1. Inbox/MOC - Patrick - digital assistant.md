@@ -1,7 +1,7 @@
 ---
 Created: 2026-01-27T18:59
 Links:
-  - "[[MOC - n8n Assistant]]"
+  - "[[1. Inbox/7. Resources/MOC - n8n Assistant]]"
 ---
 
 # Actions

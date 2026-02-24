@@ -4,8 +4,8 @@ References:
 Tags:
   - info
 Links:
-  - "[[MOC - Narrative Flow]]"
-  - "[[MOC - Editing Fundamentals]]"
+  - "[[1. Inbox/7. Resources 1/Editing/MOC - Narrative Flow]]"
+  - "[[1. Inbox/7. Resources 1/Editing/MOC - Editing Fundamentals]]"
 ---
 https://youtube.com/shorts/jRYQRUcjPz0?si=EpRHVbvr4HcS5XoM
 #### Linked References to "Cold и Hot Opening в видео"
