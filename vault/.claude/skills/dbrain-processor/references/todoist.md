@@ -76,6 +76,8 @@ add-tasks:
       projectId: "..."     # if known
 ```
 
+**IMPORTANT**: Do NOT add priority field. All tasks are created with default priority (p4).
+
 ### Task Title Style
 
 User prefers: прямота, ясность, конкретика
