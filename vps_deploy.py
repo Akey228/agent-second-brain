@@ -90,6 +90,9 @@ def main():
     run_cmd(ssh, 'apt-get update -qq', timeout=120)
     run_cmd(ssh, 'apt-get install -y -qq git curl wget build-essential software-properties-common', timeout=120)
 
+    # Set timezone to match user's timezone (Asia/Krasnoyarsk, UTC+7)
+    run_cmd(ssh, 'timedatectl set-timezone Asia/Krasnoyarsk')
+
     # =========================================================================
     # Step 3: Python 3.12
     # =========================================================================
