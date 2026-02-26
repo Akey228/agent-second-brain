@@ -341,12 +341,44 @@ WantedBy=timers.target"""
 
     run_cmd(ssh, f'cat > /etc/systemd/system/d-brain-weekly.timer << \'SVCEOF\'\n{weekly_timer}\nSVCEOF')
 
+    # Task digest service (3x daily: 06:00, 15:00, 19:00)
+    digest_service = f"""[Unit]
+Description=d-brain Task Digest
+After=network.target
+
+[Service]
+Type=oneshot
+User={DEPLOY_USER}
+WorkingDirectory={PROJECT_DIR}
+ExecStart=/home/{DEPLOY_USER}/.local/bin/uv run python scripts/task-digest.py
+EnvironmentFile={PROJECT_DIR}/.env
+StandardOutput=journal
+StandardError=journal"""
+
+    run_cmd(ssh, f'cat > /etc/systemd/system/d-brain-digest.service << \'SVCEOF\'\n{digest_service}\nSVCEOF')
+
+    # Task digest timer (3 times daily)
+    digest_timer = """[Unit]
+Description=Send Todoist task digest 3 times daily (06:00, 15:00, 19:00)
+
+[Timer]
+OnCalendar=*-*-* 06:00:00
+OnCalendar=*-*-* 15:00:00
+OnCalendar=*-*-* 19:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target"""
+
+    run_cmd(ssh, f'cat > /etc/systemd/system/d-brain-digest.timer << \'SVCEOF\'\n{digest_timer}\nSVCEOF')
+
     # Enable and start all
     print("\nEnabling and starting services...")
     run_cmd(ssh, 'systemctl daemon-reload')
     run_cmd(ssh, 'systemctl enable d-brain-bot && systemctl start d-brain-bot')
     run_cmd(ssh, 'systemctl enable d-brain-process.timer && systemctl start d-brain-process.timer')
     run_cmd(ssh, 'systemctl enable d-brain-weekly.timer && systemctl start d-brain-weekly.timer')
+    run_cmd(ssh, 'systemctl enable d-brain-digest.timer && systemctl start d-brain-digest.timer')
 
     # =========================================================================
     # Step 14: Configure Git
@@ -378,6 +410,7 @@ WantedBy=timers.target"""
     run_cmd(ssh, 'systemctl is-active d-brain-bot && echo "Bot: RUNNING" || echo "Bot: NOT RUNNING"')
     run_cmd(ssh, 'systemctl is-active d-brain-process.timer && echo "Daily timer: ACTIVE" || echo "Daily timer: INACTIVE"')
     run_cmd(ssh, 'systemctl is-active d-brain-weekly.timer && echo "Weekly timer: ACTIVE" || echo "Weekly timer: INACTIVE"')
+    run_cmd(ssh, 'systemctl is-active d-brain-digest.timer && echo "Digest timer: ACTIVE" || echo "Digest timer: INACTIVE"')
 
     print("\n--- Versions ---")
     run_cmd(ssh, 'python3.12 --version')
@@ -410,6 +443,7 @@ WantedBy=timers.target"""
     - Bot:        24/7 (listens to Telegram)
     - Processing: daily at 21:00
     - Digest:     Friday at 06:00
+    - Tasks:      daily at 06:00, 15:00, 19:00
 
   Services connected:
     - Telegram Bot

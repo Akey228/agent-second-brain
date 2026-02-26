@@ -1,0 +1,12 @@
+[Unit]
+Description=d-brain Task Digest
+After=network.target
+
+[Service]
+Type=oneshot
+User=YOUR_USER
+WorkingDirectory=/home/YOUR_USER/projects/agent-second-brain
+ExecStart=/home/YOUR_USER/.local/bin/uv run python scripts/task-digest.py
+EnvironmentFile=/home/YOUR_USER/projects/agent-second-brain/.env
+StandardOutput=journal
+StandardError=journal
